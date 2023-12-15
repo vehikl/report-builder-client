@@ -7,7 +7,7 @@ export const App: React.FC = () => {
   const [entities, setEntities] = useState<Entity[]>([]);
   const [employee, setEmployee] = useState<Entity | null>(null);
   const [addingColumn, setAddingColumn] = useState(false);
-  const [values, setValues] = useState<Field[][]>([]);
+  const [values, setValues] = useState<[Field[], string][]>([]);
 
   useEffect(() => {
     const load = async (): Promise<void> => {
@@ -26,8 +26,8 @@ export const App: React.FC = () => {
     load();
   }, []);
 
-  const onAddConfirm = (fields: Field[]): void => {
-    setValues([...values, fields]);
+  const onAddConfirm = (fields: Field[], name: string): void => {
+    setValues([...values, [fields, name]]);
     setAddingColumn(false);
   };
 
@@ -39,11 +39,13 @@ export const App: React.FC = () => {
     <div>
       <h1>Report Builder</h1>
       <button onClick={() => setAddingColumn(true)}>Add Column</button>
-      {values.map((fields, i) => (
-        <div key={i}>{fields.map((filed) => filed.path).join('.')}</div>
+      {values.map(([fields, name], i) => (
+        <div key={i}>
+          {name}: {fields.map((filed) => filed.path).join('.')}
+        </div>
       ))}
       <Modal isOpen={addingColumn} onClose={() => setAddingColumn(false)} title="Add Column">
-        <AddColumn entity={employee} entities={entities} onConfirm={onAddConfirm} />
+        <AddColumn entity={employee} entities={entities} onConfirm={onAddConfirm} name="" />
       </Modal>
     </div>
   );
