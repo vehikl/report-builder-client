@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Entity, Field } from '@src/definitions/Entity.ts';
-import { EntityFields } from '@src/components/EntityFields.tsx';
+import { Modal } from '@src/components/Modal.tsx';
+import { AddColumn } from '@src/components/AddColumn.tsx';
 
 export const App: React.FC = () => {
   const [entities, setEntities] = useState<Entity[]>([]);
   const [employee, setEmployee] = useState<Entity | null>(null);
-  const [path, setPath] = useState<Field[]>([]);
+  const [addingColumn, setAddingColumn] = useState(false);
+  const [values, setValues] = useState<Field[][]>([]);
 
   useEffect(() => {
     const load = async (): Promise<void> => {
@@ -24,6 +26,11 @@ export const App: React.FC = () => {
     load();
   }, []);
 
+  const onAddConfirm = (fields: Field[]): void => {
+    setValues([...values, fields]);
+    setAddingColumn(false);
+  };
+
   if (!employee) {
     return <h1>Loading</h1>;
   }
@@ -31,9 +38,13 @@ export const App: React.FC = () => {
   return (
     <div>
       <h1>Report Builder</h1>
-      <div>Path: {path.map((filed) => filed.path).join('.')}</div>
-      <div>Names: {path.map((filed) => filed.name).join(' > ')}</div>
-      <EntityFields entity={employee} entities={entities} onSelected={setPath} />
+      <button onClick={() => setAddingColumn(true)}>Add Column</button>
+      {values.map((fields, i) => (
+        <div key={i}>{fields.map((filed) => filed.path).join('.')}</div>
+      ))}
+      <Modal isOpen={addingColumn} onClose={() => setAddingColumn(false)} title="Add Column">
+        <AddColumn entity={employee} entities={entities} onConfirm={onAddConfirm} />
+      </Modal>
     </div>
   );
 };
