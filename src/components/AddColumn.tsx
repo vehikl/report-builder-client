@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { EntityFields } from '@src/components/EntityFields.tsx';
-import { Entity, Field } from '@src/definitions/Entity.ts';
+import { ColumnCreationData, Entity, Field } from '@src/definitions/Entity.ts';
 
 export type AddColumnProps = {
   entity: Entity;
   entities: Entity[];
-  onConfirm: (fields: Field[], name: string) => void;
+  onConfirm: (column: ColumnCreationData) => void;
   name: string;
 };
 
@@ -23,7 +23,7 @@ export const AddColumn: React.FC<AddColumnProps> = ({ entity, entities, onConfir
         value={updatedName}
         onChange={(e) => setUpdatedName(e.target.value)}
       />
-      <button onClick={() => onConfirm(fields, updatedName)}>Confirm</button>
+      <button onClick={() => onConfirm({ fields, name: updatedName })}>Confirm</button>
       <EntityFields entity={entity} entities={entities} onSelected={setFields} />
     </>
   );

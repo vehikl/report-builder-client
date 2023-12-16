@@ -31,3 +31,18 @@ export type Field = {
   path: string;
   name: string;
 };
+
+export type ColumnCreationData = {
+  name: string;
+  fields: Field[];
+};
+
+export type ReportColumn = {
+  name: string;
+  expression: string;
+};
+
+export type CreateReportData = {
+  name: string;
+  columns: ReportColumn[];
+};
