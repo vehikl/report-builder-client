@@ -46,3 +46,9 @@ export type CreateReportData = {
   name: string;
   columns: ReportColumn[];
 };
+
+export type ReportVisualization = {
+  name: string;
+  headers: string[];
+  records: Record<string, string | number | boolean | null | undefined>[];
+};
