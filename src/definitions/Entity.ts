@@ -52,3 +52,9 @@ export type ReportVisualization = {
   headers: string[];
   records: Record<string, string | number | boolean | null | undefined>[];
 };
+
+export type Report = {
+  id: number;
+  name: string;
+  columns: ReportColumn[];
+};

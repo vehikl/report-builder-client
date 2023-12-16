@@ -1,27 +1,19 @@
 import React, { useState } from 'react';
-import { CreateReportPage } from '@src/pages/CreateReportPage.tsx';
+import { Navbar } from '@src/components/Navbar.tsx';
+import { Report } from '@src/definitions/Entity.ts';
+import { ReportList } from '@src/components/ReportList.tsx';
 import { ReportPage } from '@src/pages/ReportPage.tsx';
 
-type PageId = 'home' | 'create-report' | 'report';
-
 export const App: React.FC = () => {
-  const [page, setPage] = useState<PageId>('report');
-
-  const pageComponent = {
-    home: <h2>Home Page</h2>,
-    'create-report': <CreateReportPage />,
-    report: <ReportPage />,
-  }[page];
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
 
   return (
-    <div>
-      <h1>Report Builder</h1>
-      <div className="flex gap-4">
-        <button onClick={() => setPage('home')}>Home</button>
-        <button onClick={() => setPage('create-report')}>New Report</button>
-        <button onClick={() => setPage('report')}>Report</button>
+    <div className="h-screen flex flex-col">
+      <Navbar />
+      <div className="flex flex-1 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300">
+        <ReportList onReportSelected={setSelectedReport} />
+        {selectedReport && <ReportPage />}
       </div>
-      {pageComponent}
     </div>
   );
 };

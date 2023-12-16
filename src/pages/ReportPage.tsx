@@ -6,7 +6,7 @@ export const ReportPage: React.FC = () => {
 
   useEffect(() => {
     const load = async (): Promise<void> => {
-      const response = await fetch('http://localhost/api/reports/1/visualize');
+      const response = await fetch('http://localhost/api/reports/1/preview');
 
       if (!response.ok) {
         return;
