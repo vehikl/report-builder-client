@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { ReportVisualization } from '@src/definitions/Entity.ts';
+import { Report, ReportVisualization } from '@src/definitions/Entity.ts';
+import { TextField } from '@src/components/TextField.tsx';
+import { ReportPreview } from '@src/components/ReportPreview.tsx';
 
-export const ReportPage: React.FC = () => {
-  const [report, setReport] = useState<ReportVisualization | null>(null);
+type ReportPageProps = {
+  report: Report;
+};
+
+export const ReportPage: React.FC<ReportPageProps> = ({ report }) => {
+  const [preview, setPreview] = useState<ReportVisualization | null>(null);
+  const [name, setName] = useState(report.name);
 
   useEffect(() => {
     const load = async (): Promise<void> => {
-      const response = await fetch('http://localhost/api/reports/1/preview');
+      const response = await fetch(`http://localhost/api/reports/${report.id}/preview`);
 
       if (!response.ok) {
         return;
@@ -14,41 +21,21 @@ export const ReportPage: React.FC = () => {
 
       const { data } = (await response.json()) as { data: ReportVisualization };
 
-      setReport(data);
+      setPreview(data);
     };
 
     load();
-  }, []);
-
-  if (!report) {
-    return <h1>Loading</h1>;
-  }
+  }, [report.id]);
 
   return (
-    <div>
-      <h2>{report.name}</h2>
-      <div className="relative overflow-x-auto">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              {report.headers.map((header) => (
-                <th scope="col" className="px-6 py-3">
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {report.records.map((record) => (
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                {report.headers.map((header) => (
-                  <td className="px-6 py-4">{record[header]}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+    <div className="flex flex-col gap-2">
+      <h2 className="p-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+        {report.name}
+      </h2>
+      <form className="max-w-sm mx-auto">
+        <TextField value={name} onChange={setName} />
+      </form>
+      {preview && <ReportPreview preview={preview} />}
     </div>
   );
 };

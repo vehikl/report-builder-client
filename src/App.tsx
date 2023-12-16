@@ -12,7 +12,7 @@ export const App: React.FC = () => {
       <Navbar />
       <div className="flex flex-1 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300">
         <ReportList onReportSelected={setSelectedReport} />
-        {selectedReport && <ReportPage />}
+        {selectedReport && <ReportPage report={selectedReport} />}
       </div>
     </div>
   );

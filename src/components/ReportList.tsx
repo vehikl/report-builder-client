@@ -37,6 +37,7 @@ export const ReportList: React.FC<ReportListProps> = ({ onReportSelected }) => {
     <ul className="min-w-[200px] p-2 divide-y divide-gray-200 dark:divide-gray-700 border-r border-gray-200 dark:border-gray-700">
       {reports.map((report) => (
         <li
+          key={report.id}
           className="flex flex-col flex-1 w-full cursor-pointer"
           onClick={() => onReportSelected(report)}
         >
