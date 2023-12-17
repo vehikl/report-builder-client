@@ -11,7 +11,7 @@ export type Column = {
 
 export type ReportPreview = {
   name: string;
-  headers: Column[];
+  columns: Column[];
   records: Record<string, string | number | boolean | null | undefined>[];
 };
 
