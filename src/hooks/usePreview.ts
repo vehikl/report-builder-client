@@ -1,10 +1,10 @@
-import { ColumnCreationData, ReportVisualization } from '@src/definitions/Entity.ts';
+import { ReportColumn, ReportVisualization } from '@src/definitions/Entity.ts';
 import { useEffect, useState } from 'react';
 import qs from 'qs';
 
 export const usePreview = (
   reportName: string,
-  columns: ColumnCreationData[],
+  columns: ReportColumn[],
 ): ReportVisualization | null => {
   const [preview, setPreview] = useState<ReportVisualization | null>(null);
 
@@ -12,10 +12,7 @@ export const usePreview = (
     const load = async (): Promise<void> => {
       const query = qs.stringify({
         name: reportName,
-        columns: columns.map(({ name, fields }) => ({
-          name,
-          expression: fields.map((filed) => filed.path).join('.'),
-        })),
+        columns,
       });
 
       const response = await fetch(`http://localhost/api/preview-report?${query}`, {

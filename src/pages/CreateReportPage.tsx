@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal } from '@src/components/Modal.tsx';
-import { AddColumn } from '@src/components/AddColumn.tsx';
+import { AddColumnForm } from '@src/components/AddColumnForm.tsx';
 import { ColumnCreationData, CreateReportData, Entity } from '@src/definitions/Entity.ts';
 
 export const CreateReportPage: React.FC = () => {
@@ -58,7 +58,7 @@ export const CreateReportPage: React.FC = () => {
         </div>
       ))}
       <Modal isOpen={addingColumn} onClose={() => setAddingColumn(false)} title="Add Column">
-        <AddColumn entity={employee} entities={entities} onConfirm={onAddConfirm} name="" />
+        <AddColumnForm entity={employee} entities={entities} onConfirm={onAddConfirm} name="" />
       </Modal>
     </>
   );

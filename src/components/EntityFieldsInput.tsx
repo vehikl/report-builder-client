@@ -8,7 +8,7 @@ type EntityFieldsProps = {
   isCollection?: boolean;
 };
 
-export const EntityFields: React.FC<EntityFieldsProps> = ({
+export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
   entity,
   entities,
   onSelected,
@@ -45,7 +45,7 @@ export const EntityFields: React.FC<EntityFieldsProps> = ({
             {relation.name} {'>'}
           </button>
           {selectedEntity && selectedRelation === relation && (
-            <EntityFields
+            <EntityFieldsInput
               entity={selectedEntity}
               entities={entities}
               onSelected={(fields) =>
