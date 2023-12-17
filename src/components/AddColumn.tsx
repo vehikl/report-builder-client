@@ -13,6 +13,11 @@ export const AddColumn: React.FC<AddColumnProps> = ({ entity, entities, onConfir
   const [fields, setFields] = useState<Field[]>([]);
   const [updatedName, setUpdatedName] = useState(name);
 
+  const onSelected = (fields: Field[]): void => {
+    setFields(fields);
+    setUpdatedName(fields.map((filed) => filed.name).join(' '));
+  };
+
   return (
     <>
       <div>Path: {fields.map((filed) => filed.path).join('.')}</div>
@@ -24,7 +29,7 @@ export const AddColumn: React.FC<AddColumnProps> = ({ entity, entities, onConfir
         onChange={(e) => setUpdatedName(e.target.value)}
       />
       <button onClick={() => onConfirm({ fields, name: updatedName })}>Confirm</button>
-      <EntityFields entity={entity} entities={entities} onSelected={setFields} />
+      <EntityFields entity={entity} entities={entities} onSelected={onSelected} />
     </>
   );
 };
