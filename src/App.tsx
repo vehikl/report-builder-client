@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Navbar } from '@src/components/Navbar.tsx';
-import { Report } from '@src/definitions/Entity.ts';
 import { ReportList } from '@src/components/ReportList.tsx';
 import { ReportPage } from '@src/pages/ReportPage.tsx';
 import { Spinner } from '@src/components/Spinner.tsx';
 import { useEntities } from '@src/hooks/useEntities.ts';
+import { Report } from '@src/definitions/Report.ts';
 
 export const App: React.FC = () => {
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);

@@ -1,11 +1,11 @@
 import React from 'react';
-import { ReportVisualization } from '@src/definitions/Entity.ts';
+import { ReportPreview } from '@src/definitions/Report.ts';
 
 type ReportPreviewProps = {
-  preview: ReportVisualization;
+  preview: ReportPreview;
   onAddClick: () => void;
 };
-export const ReportPreview: React.FC<ReportPreviewProps> = ({ preview, onAddClick }) => {
+export const ReportPreviewTable: React.FC<ReportPreviewProps> = ({ preview, onAddClick }) => {
   return (
     <div className="relative overflow-x-auto border-x dark:border-gray-700">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

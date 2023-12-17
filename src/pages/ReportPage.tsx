@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Entity, Report, ReportColumn } from '@src/definitions/Entity.ts';
+import { Entity } from '@src/definitions/Entity.ts';
+import { Report, Column } from '@src/definitions/Report.ts';
 import { TextField } from '@src/components/TextField.tsx';
-import { ReportPreview } from '@src/components/ReportPreview.tsx';
+import { ReportPreviewTable } from '@src/components/ReportPreviewTable.tsx';
 import { Modal } from '@src/components/Modal.tsx';
 import { AddColumnForm } from '@src/components/AddColumnForm.tsx';
 import { usePreview } from '@src/hooks/usePreview.ts';
@@ -15,10 +16,10 @@ type ReportPageProps = {
 export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employeeEntity }) => {
   const [name, setName] = useState(report.name);
   const [addingColumn, setAddingColumn] = useState(false);
-  const [columns, setColumns] = useState<ReportColumn[]>(report.columns);
+  const [columns, setColumns] = useState<Column[]>(report.columns);
   const preview = usePreview(report.name, columns);
 
-  const onAddConfirm = (column: ReportColumn): void => {
+  const onAddConfirm = (column: Column): void => {
     setColumns([...columns, column]);
     setAddingColumn(false);
   };
@@ -32,7 +33,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employ
         <TextField value={name} onChange={setName} />
       </form>
 
-      {preview && <ReportPreview preview={preview} onAddClick={() => setAddingColumn(true)} />}
+      {preview && <ReportPreviewTable preview={preview} onAddClick={() => setAddingColumn(true)} />}
 
       <Modal isOpen={addingColumn} onClose={() => setAddingColumn(false)} title="Add Column">
         <AddColumnForm entity={employeeEntity} entities={entities} onConfirm={onAddConfirm} />

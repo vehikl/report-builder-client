@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Entity, Field, Relation } from '@src/definitions/Entity.ts';
+import { Entity, Relation } from '@src/definitions/Entity.ts';
+import { Field } from '@src/definitions/Report.ts';
 
 type EntityFieldsProps = {
   entity: Entity;
@@ -24,7 +25,7 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
     return (
       <ul className="pl-4 border">
         <li>
-          <button onClick={() => onSelected([{ path: '(count)', name: 'Total' }])}>Total</button>
+          <button onClick={() => onSelected([{ key: '(count)', name: 'Total' }])}>Total</button>
         </li>
       </ul>
     );
@@ -34,7 +35,7 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
     <ul className="pl-4 border">
       {entity.attributes.map((attribute) => (
         <li key={attribute.id}>
-          <button onClick={() => onSelected([{ path: attribute.column, name: attribute.name }])}>
+          <button onClick={() => onSelected([{ key: attribute.column, name: attribute.name }])}>
             {attribute.name}
           </button>
         </li>
@@ -49,7 +50,7 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
               entity={selectedEntity}
               entities={entities}
               onSelected={(fields) =>
-                onSelected([{ path: relation.accessor, name: relation.name }, ...fields])
+                onSelected([{ key: relation.accessor, name: relation.name }, ...fields])
               }
               isCollection={selectedRelation.is_collection}
             />

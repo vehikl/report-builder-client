@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Report } from '@src/definitions/Entity.ts';
+import { Report } from '@src/definitions/Report.ts';
 import { Spinner } from '@src/components/Spinner.tsx';
 
 export type ReportListProps = {

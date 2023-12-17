@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { EntityFieldsInput } from '@src/components/EntityFieldsInput.tsx';
-import { Entity, Field, ReportColumn } from '@src/definitions/Entity.ts';
+import { Entity } from '@src/definitions/Entity.ts';
+import { Field, Column } from '@src/definitions/Report.ts';
 
 export type AddColumnProps = {
   entity: Entity;
   entities: Entity[];
-  onConfirm: (column: ReportColumn) => void;
+  onConfirm: (column: Column) => void;
 };
 
 export const AddColumnForm: React.FC<AddColumnProps> = ({ entity, entities, onConfirm }) => {
@@ -20,14 +21,13 @@ export const AddColumnForm: React.FC<AddColumnProps> = ({ entity, entities, onCo
   const onConfirmClick = (): void => {
     onConfirm({
       name,
-      expression: fields.map((filed) => filed.name).join(' '),
+      expression: fields.map((filed) => filed.key).join('.'),
     });
   };
 
   return (
     <>
-      <div>Path: {fields.map((filed) => filed.path).join('.')}</div>
-      <div>Names: {fields.map((filed) => filed.name).join(' > ')}</div>
+      <div>Expression: {fields.map((filed) => filed.name).join(' > ')}</div>
       <input
         type="text"
         className="border"

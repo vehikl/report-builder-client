@@ -26,35 +26,3 @@ export type Relation = {
   created_at: string;
   updated_at: string;
 };
-
-export type Field = {
-  path: string;
-  name: string;
-};
-
-export type ColumnCreationData = {
-  name: string;
-  fields: Field[];
-};
-
-export type ReportColumn = {
-  name: string;
-  expression: string;
-};
-
-export type CreateReportData = {
-  name: string;
-  columns: ReportColumn[];
-};
-
-export type ReportVisualization = {
-  name: string;
-  headers: string[];
-  records: Record<string, string | number | boolean | null | undefined>[];
-};
-
-export type Report = {
-  id: number;
-  name: string;
-  columns: ReportColumn[];
-};

@@ -1,12 +1,9 @@
-import { ReportColumn, ReportVisualization } from '@src/definitions/Entity.ts';
+import { Column, ReportPreview } from '@src/definitions/Report.ts';
 import { useEffect, useState } from 'react';
 import qs from 'qs';
 
-export const usePreview = (
-  reportName: string,
-  columns: ReportColumn[],
-): ReportVisualization | null => {
-  const [preview, setPreview] = useState<ReportVisualization | null>(null);
+export const usePreview = (reportName: string, columns: Column[]): ReportPreview | null => {
+  const [preview, setPreview] = useState<ReportPreview | null>(null);
 
   useEffect(() => {
     const load = async (): Promise<void> => {
@@ -23,7 +20,7 @@ export const usePreview = (
         return;
       }
 
-      const { data } = (await response.json()) as { data: ReportVisualization };
+      const { data } = (await response.json()) as { data: ReportPreview };
 
       setPreview(data);
     };
