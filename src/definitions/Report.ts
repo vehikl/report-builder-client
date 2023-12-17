@@ -11,11 +11,11 @@ export type Column = {
 
 export type ReportPreview = {
   name: string;
-  headers: string[];
+  headers: Column[];
   records: Record<string, string | number | boolean | null | undefined>[];
 };
 
 export type Field = {
-  key: string;
   name: string;
+  key: string;
 };

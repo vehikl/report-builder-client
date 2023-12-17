@@ -6,6 +6,7 @@ import { ReportPreviewTable } from '@src/components/ReportPreviewTable.tsx';
 import { Modal } from '@src/components/Modal.tsx';
 import { AddColumnForm } from '@src/components/AddColumnForm.tsx';
 import { usePreview } from '@src/hooks/usePreview.ts';
+import { EditColumnForm } from '@src/components/EditColumnForm.tsx';
 
 type ReportPageProps = {
   report: Report;
@@ -15,13 +16,21 @@ type ReportPageProps = {
 
 export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employeeEntity }) => {
   const [name, setName] = useState(report.name);
-  const [addingColumn, setAddingColumn] = useState(false);
+  const [isAddingColumn, setIsAddingColumn] = useState(false);
+  const [editingColumn, setEditingColumn] = useState<Column | null>(null);
   const [columns, setColumns] = useState<Column[]>(report.columns);
   const preview = usePreview(report.name, columns);
 
   const onAddConfirm = (column: Column): void => {
     setColumns([...columns, column]);
-    setAddingColumn(false);
+    setIsAddingColumn(false);
+  };
+
+  const onEditConfirm = (column: Column): void => {
+    const index = columns.findIndex((c) => c === editingColumn);
+    columns.splice(index, 1, column);
+    setColumns(columns.slice());
+    setEditingColumn(null);
   };
 
   return (
@@ -33,10 +42,26 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employ
         <TextField value={name} onChange={setName} />
       </form>
 
-      {preview && <ReportPreviewTable preview={preview} onAddClick={() => setAddingColumn(true)} />}
+      {preview && (
+        <ReportPreviewTable
+          preview={preview}
+          onAddClick={() => setIsAddingColumn(true)}
+          onEditClick={setEditingColumn}
+        />
+      )}
 
-      <Modal isOpen={addingColumn} onClose={() => setAddingColumn(false)} title="Add Column">
+      <Modal isOpen={isAddingColumn} onClose={() => setIsAddingColumn(false)} title="Add Column">
         <AddColumnForm entity={employeeEntity} entities={entities} onConfirm={onAddConfirm} />
+      </Modal>
+      <Modal isOpen={!!editingColumn} onClose={() => {}} title="Edit Column">
+        {editingColumn && (
+          <EditColumnForm
+            entity={employeeEntity}
+            entities={entities}
+            onConfirm={onEditConfirm}
+            column={editingColumn}
+          />
+        )}
       </Modal>
     </div>
   );
