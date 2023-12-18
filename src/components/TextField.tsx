@@ -7,6 +7,7 @@ type TextFieldProps = {
   onChange?: (value: string) => void;
   disabled?: boolean;
   readOnly?: boolean;
+  inputClass?: string;
 };
 export const TextField: React.FC<TextFieldProps> = ({
   label,
@@ -14,6 +15,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   onChange,
   disabled = false,
   readOnly = false,
+  inputClass = false,
 }) => {
   return (
     <label className="block text-sm font-medium text-gray-900 dark:text-white">
@@ -25,6 +27,7 @@ export const TextField: React.FC<TextFieldProps> = ({
         readOnly={readOnly}
         className={cx(
           'mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500',
+          inputClass,
           {
             'bg-gray-50 dark:text-white': !disabled && !readOnly,
             'bg-gray-100 dark:text-gray-400': disabled || readOnly,

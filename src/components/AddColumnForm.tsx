@@ -4,6 +4,7 @@ import { Entity } from '@src/definitions/Entity.ts';
 import { Field, Column } from '@src/definitions/Report.ts';
 import { TextField } from '@src/components/TextField.tsx';
 import { Button } from '@src/components/Button.tsx';
+import { ExpressionField } from '@src/components/ExpressionField.tsx';
 
 export type AddColumnProps = {
   entity: Entity;
@@ -30,12 +31,7 @@ export const AddColumnForm: React.FC<AddColumnProps> = ({ entity, entities, onCo
   return (
     <form className="flex flex-col gap-4">
       <TextField label="Name" value={name} onChange={setName} />
-      <TextField
-        label="Expression"
-        readOnly
-        value={fields.map((filed) => filed.name).join(' > ')}
-      />
-      <EntityFieldsInput entity={entity} entities={entities} onSelected={onSelected} />
+      <ExpressionField entity={entity} entities={entities} onChange={onSelected} value={fields} />
       <Button type="submit" onClick={onConfirmClick}>
         Confirm
       </Button>
