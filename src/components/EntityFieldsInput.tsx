@@ -25,7 +25,9 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
     return (
       <ul className="pl-4 border">
         <li>
-          <button onClick={() => onSelected([{ key: '(count)', name: 'Total' }])}>Total</button>
+          <button type="button" onClick={() => onSelected([{ key: '(count)', name: 'Total' }])}>
+            Total
+          </button>
         </li>
       </ul>
     );
@@ -35,14 +37,17 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
     <ul className="pl-4 border">
       {entity.attributes.map((attribute) => (
         <li key={attribute.id}>
-          <button onClick={() => onSelected([{ key: attribute.column, name: attribute.name }])}>
+          <button
+            type="button"
+            onClick={() => onSelected([{ key: attribute.column, name: attribute.name }])}
+          >
             {attribute.name}
           </button>
         </li>
       ))}
       {entity.relations.map((relation) => (
         <li key={relation.id}>
-          <button onClick={() => setSelectedRelation(relation)} className="font-bold">
+          <button type="button" onClick={() => setSelectedRelation(relation)} className="font-bold">
             {relation.name} {'>'}
           </button>
           {selectedEntity && selectedRelation === relation && (

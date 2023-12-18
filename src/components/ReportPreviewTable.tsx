@@ -1,5 +1,6 @@
 import React from 'react';
 import { Column, ReportPreview } from '@src/definitions/Report.ts';
+import { Button } from '@src/components/Button.tsx';
 
 type ReportPreviewProps = {
   preview: ReportPreview;
@@ -27,13 +28,9 @@ export const ReportPreviewTable: React.FC<ReportPreviewProps> = ({
               </th>
             ))}
             <th scope="col" className="px-6 py-3 flex justify-center">
-              <button
-                type="button"
-                onClick={onAddClick}
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-xs px-3 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
+              <Button onClick={onAddClick} size="sm">
                 Add
-              </button>
+              </Button>
             </th>
           </tr>
         </thead>

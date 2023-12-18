@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { EntityFieldsInput } from '@src/components/EntityFieldsInput.tsx';
 import { Entity } from '@src/definitions/Entity.ts';
 import { Field, Column } from '@src/definitions/Report.ts';
+import { TextField } from '@src/components/TextField.tsx';
+import { Button } from '@src/components/Button.tsx';
 
 export type AddColumnProps = {
   entity: Entity;
@@ -26,16 +28,17 @@ export const AddColumnForm: React.FC<AddColumnProps> = ({ entity, entities, onCo
   };
 
   return (
-    <>
-      <div>Expression: {fields.map((filed) => filed.name).join(' > ')}</div>
-      <input
-        type="text"
-        className="border"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+    <form className="flex flex-col gap-4">
+      <TextField label="Name" value={name} onChange={setName} />
+      <TextField
+        label="Expression"
+        readOnly
+        value={fields.map((filed) => filed.name).join(' > ')}
       />
-      <button onClick={onConfirmClick}>Confirm</button>
       <EntityFieldsInput entity={entity} entities={entities} onSelected={onSelected} />
-    </>
+      <Button type="submit" onClick={onConfirmClick}>
+        Confirm
+      </Button>
+    </form>
   );
 };

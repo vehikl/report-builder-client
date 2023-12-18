@@ -39,7 +39,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employ
         {report.name}
       </h2>
       <form className="max-w-xs">
-        <TextField value={name} onChange={setName} />
+        <TextField label="Report Name" value={name} onChange={setName} />
       </form>
 
       {preview && (
