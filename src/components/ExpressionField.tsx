@@ -20,11 +20,12 @@ export const ExpressionField: React.FC<ExpressionFieldProps> = ({
     <div>
       <TextField
         label="Expression"
+        placeholder="Select from the list"
         readOnly
         value={value.map((field) => field.name).join(' > ')}
         inputClass="rounded-b-none"
       />
-      <EntityFieldsInput entity={entity} entities={entities} onSelected={onChange} isRoot />
+      <EntityFieldsInput entity={entity} entities={entities} onChange={onChange} value={value} />
     </div>
   );
 };

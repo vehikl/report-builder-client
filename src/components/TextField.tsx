@@ -8,6 +8,7 @@ type TextFieldProps = {
   disabled?: boolean;
   readOnly?: boolean;
   inputClass?: string;
+  placeholder?: string;
 };
 export const TextField: React.FC<TextFieldProps> = ({
   label,
@@ -16,11 +17,13 @@ export const TextField: React.FC<TextFieldProps> = ({
   disabled = false,
   readOnly = false,
   inputClass = false,
+  placeholder,
 }) => {
   return (
     <label className="block text-sm font-medium text-gray-900 dark:text-white">
       {label}
       <input
+        placeholder={placeholder}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         disabled={disabled}
@@ -32,6 +35,7 @@ export const TextField: React.FC<TextFieldProps> = ({
             'bg-gray-50 dark:text-white': !disabled && !readOnly,
             'bg-gray-100 dark:text-gray-400': disabled || readOnly,
             'cursor-not-allowed': disabled,
+            'dark:py-1.5 placeholder:italic dark:bg-gray-600': readOnly,
           },
         )}
         required
