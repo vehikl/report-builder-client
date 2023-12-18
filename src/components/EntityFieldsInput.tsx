@@ -10,6 +10,7 @@ type FieldButtonProps = {
   isExpandable?: boolean;
   isExpanded?: boolean;
   isEntity?: boolean;
+  isSelected?: boolean;
 };
 
 const FieldButton: React.FC<FieldButtonProps> = ({
@@ -18,16 +19,20 @@ const FieldButton: React.FC<FieldButtonProps> = ({
   isExpandable = false,
   isExpanded = false,
   isEntity = false,
+  isSelected = false,
 }) => {
   return (
     <button
       onClick={onClick}
       type="button"
       className={cx(
-        'flex items-center justify-between w-full p-2 text-gray-900 border-gray-300 dark:border-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 gap-3',
+        'flex items-center justify-between w-full p-2 border-gray-300 dark:border-gray-600 gap-3',
         {
           'font-bold': isExpandable || isEntity,
-          // 'border-b': !isLast,
+          'text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800':
+            !isSelected,
+          'rounded-lg text-white dark:text-gray-900 bg-gray-700 dark:bg-gray-50 hover:bg-gray-800 dark:hover:bg-gray-100':
+            isSelected,
         },
       )}
     >
@@ -99,16 +104,15 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
       ) : (
         <ul className="pl-2">
           {!selectedRelation &&
-            entity.attributes
-              .filter((attribute) => !selectedAttribute || selectedAttribute === attribute)
-              .map((attribute) => (
-                <li key={attribute.id}>
-                  <FieldButton
-                    label={attribute.name}
-                    onClick={() => onChange([{ key: attribute.column, name: attribute.name }])}
-                  />
-                </li>
-              ))}
+            entity.attributes.map((attribute) => (
+              <li key={attribute.id}>
+                <FieldButton
+                  label={attribute.name}
+                  isSelected={selectedAttribute === attribute}
+                  onClick={() => onChange([{ key: attribute.column, name: attribute.name }])}
+                />
+              </li>
+            ))}
           {field && selectedEntity && selectedRelation ? (
             <li>
               <EntityFieldsInput
@@ -121,18 +125,15 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
               />
             </li>
           ) : (
-            !selectedAttribute &&
-            entity.relations
-              .filter((relation) => !selectedRelation || selectedRelation === relation)
-              .map((relation) => (
-                <li key={relation.id}>
-                  <FieldButton
-                    isExpandable
-                    label={relation.name}
-                    onClick={() => onChange([{ key: relation.accessor, name: relation.name }])}
-                  />
-                </li>
-              ))
+            entity.relations.map((relation) => (
+              <li key={relation.id}>
+                <FieldButton
+                  isExpandable
+                  label={relation.name}
+                  onClick={() => onChange([{ key: relation.accessor, name: relation.name }])}
+                />
+              </li>
+            ))
           )}
         </ul>
       )}
