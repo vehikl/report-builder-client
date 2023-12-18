@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Entity } from '@src/definitions/Entity.ts';
-import { Report, Column } from '@src/definitions/Report.ts';
+import { Column, Report } from '@src/definitions/Report.ts';
 import { TextField } from '@src/components/TextField.tsx';
 import { ReportPreviewTable } from '@src/components/ReportPreviewTable.tsx';
 import { Modal } from '@src/components/Modal.tsx';
@@ -53,7 +53,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employ
       <Modal isOpen={isAddingColumn} onClose={() => setIsAddingColumn(false)} title="Add Column">
         <AddColumnForm entity={employeeEntity} entities={entities} onConfirm={onAddConfirm} />
       </Modal>
-      <Modal isOpen={!!editingColumn} onClose={() => {}} title="Edit Column">
+      <Modal isOpen={!!editingColumn} onClose={() => setEditingColumn(null)} title="Edit Column">
         {editingColumn && (
           <EditColumnForm
             entity={employeeEntity}

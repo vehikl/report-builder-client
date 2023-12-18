@@ -1,5 +1,5 @@
-import React, { ReactNode, useState } from 'react';
-import { Entity, Relation } from '@src/definitions/Entity.ts';
+import React from 'react';
+import { Entity } from '@src/definitions/Entity.ts';
 import { Field } from '@src/definitions/Report.ts';
 import ChevronUpIcon from '@src/assets/chevron-up.svg?react';
 import cx from 'classnames';
