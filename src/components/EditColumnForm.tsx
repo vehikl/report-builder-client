@@ -4,6 +4,7 @@ import { Column, Field } from '@src/definitions/Report.ts';
 import { TextField } from '@src/components/TextField.tsx';
 import { Button } from '@src/components/Button.tsx';
 import { ExpressionField } from '@src/components/ExpressionField.tsx';
+import { getColumnFields } from '@src/services/column.ts';
 
 export type EditColumnProps = {
   entity: Entity;
@@ -18,15 +19,7 @@ export const EditColumnForm: React.FC<EditColumnProps> = ({
   onConfirm,
   column,
 }) => {
-  const initialFields = column.expression.split('.').map<Field>((key) => ({
-    key,
-    name:
-      entity.relations.find((relation) => relation.accessor === key)?.name ??
-      entity.attributes.find((attribute) => attribute.column === key)?.name ??
-      '',
-  }));
-
-  const [fields, setFields] = useState<Field[]>(initialFields);
+  const [fields, setFields] = useState<Field[]>(getColumnFields(column, entity, entities));
   const [name, setName] = useState(column.name);
 
   const onSelected = (fields: Field[]): void => {
