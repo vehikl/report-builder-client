@@ -1,16 +1,17 @@
 export type Entity = {
+  id: number;
   table: string;
+  name: string;
   created_at: string;
   updated_at: string;
-  name: string;
   attributes: Attribute[];
   relations: Relation[];
 };
 
 export type Attribute = {
   id: number;
-  entity_table: string;
-  column: string;
+  entity_id: number;
+  path: string;
   name: string;
   created_at: string;
   updated_at: string;
@@ -18,10 +19,10 @@ export type Attribute = {
 
 export type Relation = {
   id: number;
-  accessor: string;
-  entity_table: string;
-  related_entity_table: string;
+  path: string;
+  entity_id: number;
   name: string;
+  related_entity_id: number;
   is_collection: boolean;
   created_at: string;
   updated_at: string;

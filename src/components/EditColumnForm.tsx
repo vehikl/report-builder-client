@@ -30,7 +30,7 @@ export const EditColumnForm: React.FC<EditColumnProps> = ({
   const onConfirmClick = (): void => {
     onConfirm({
       name,
-      expression: fields.map((filed) => filed.key).join('.'),
+      expression: fields.map((filed) => filed.key).join(':'),
     });
   };
 

@@ -69,14 +69,14 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
   const isLeaf = !field;
   const selectedAttribute = !field
     ? null
-    : entity.attributes.find((attribute) => attribute.column === field.key);
+    : entity.attributes.find((attribute) => attribute.path === field.key);
 
   const selectedRelation = !field
     ? null
-    : entity.relations.find((attribute) => attribute.accessor === field.key);
+    : entity.relations.find((relation) => relation.path === field.key);
 
   const selectedEntity = entities.find(
-    (entity) => entity.table === selectedRelation?.related_entity_table,
+    (entity) => entity.id === selectedRelation?.related_entity_id,
   );
 
   return (
@@ -118,7 +118,7 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
                 <FieldButton
                   label={attribute.name}
                   isSelected={selectedAttribute === attribute}
-                  onClick={() => onChange([{ key: attribute.column, name: attribute.name }])}
+                  onClick={() => onChange([{ key: attribute.path, name: attribute.name }])}
                 />
               </li>
             ))}
@@ -127,7 +127,7 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
                 <FieldButton
                   isExpandable
                   label={relation.name}
-                  onClick={() => onChange([{ key: relation.accessor, name: relation.name }])}
+                  onClick={() => onChange([{ key: relation.path, name: relation.name }])}
                 />
               </li>
             ))}
