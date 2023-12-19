@@ -3,6 +3,7 @@ import { Entity } from '@src/definitions/Entity.ts';
 import { Field } from '@src/definitions/Report.ts';
 import ChevronUpIcon from '@src/assets/chevron-up.svg?react';
 import cx from 'classnames';
+import { getRelationPath, relationMatchesPath } from '@src/services/relation.ts';
 
 type FieldButtonProps = {
   onClick: () => void;
@@ -71,9 +72,7 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
     ? null
     : entity.attributes.find((attribute) => attribute.path === field.key);
 
-  const selectedRelation = !field
-    ? null
-    : entity.relations.find((relation) => relation.path === field.key);
+  const selectedRelation = !field ? null : entity.relations.find(relationMatchesPath(field.key));
 
   const selectedEntity = entities.find(
     (entity) => entity.id === selectedRelation?.related_entity_id,
@@ -127,7 +126,9 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
                 <FieldButton
                   isExpandable
                   label={relation.name}
-                  onClick={() => onChange([{ key: relation.path, name: relation.name }])}
+                  onClick={() =>
+                    onChange([{ key: getRelationPath(relation), name: relation.name }])
+                  }
                 />
               </li>
             ))}

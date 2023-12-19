@@ -19,7 +19,7 @@ export type Attribute = {
 
 export type Relation = {
   id: number;
-  path: string;
+  path: string | null;
   entity_id: number;
   name: string;
   related_entity_id: number;

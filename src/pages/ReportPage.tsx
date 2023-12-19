@@ -21,8 +21,6 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employ
   const [columns, setColumns] = useState(report.columns);
   const preview = usePreview(report.name, columns);
 
-  console.log(editingColumnIndex);
-
   const onAddConfirm = (column: Column): void => {
     setColumns([...columns, column]);
     setIsAddingColumn(false);
