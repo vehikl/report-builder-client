@@ -17,9 +17,11 @@ type ReportPageProps = {
 export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employeeEntity }) => {
   const [name, setName] = useState(report.name);
   const [isAddingColumn, setIsAddingColumn] = useState(false);
-  const [editingColumn, setEditingColumn] = useState<Column | null>(null);
-  const [columns, setColumns] = useState<Column[]>(report.columns);
+  const [editingColumnIndex, setEditingColumnIndex] = useState<number | null>(null);
+  const [columns, setColumns] = useState(report.columns);
   const preview = usePreview(report.name, columns);
+
+  console.log(editingColumnIndex);
 
   const onAddConfirm = (column: Column): void => {
     setColumns([...columns, column]);
@@ -27,10 +29,12 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employ
   };
 
   const onEditConfirm = (column: Column): void => {
-    const index = columns.findIndex((c) => c === editingColumn);
-    columns.splice(index, 1, column);
+    if (editingColumnIndex == null) {
+      return;
+    }
+    columns.splice(editingColumnIndex, 1, column);
     setColumns(columns.slice());
-    setEditingColumn(null);
+    setEditingColumnIndex(null);
   };
 
   return (
@@ -46,20 +50,24 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employ
         <ReportPreviewTable
           preview={preview}
           onAddClick={() => setIsAddingColumn(true)}
-          onEditClick={setEditingColumn}
+          onEditClick={setEditingColumnIndex}
         />
       )}
 
       <Modal isOpen={isAddingColumn} onClose={() => setIsAddingColumn(false)} title="Add Column">
         <AddColumnForm entity={employeeEntity} entities={entities} onConfirm={onAddConfirm} />
       </Modal>
-      <Modal isOpen={!!editingColumn} onClose={() => setEditingColumn(null)} title="Edit Column">
-        {editingColumn && (
+      <Modal
+        isOpen={editingColumnIndex != null}
+        onClose={() => setEditingColumnIndex(null)}
+        title="Edit Column"
+      >
+        {editingColumnIndex != null && (
           <EditColumnForm
             entity={employeeEntity}
             entities={entities}
             onConfirm={onEditConfirm}
-            column={editingColumn}
+            column={columns[editingColumnIndex]}
           />
         )}
       </Modal>
