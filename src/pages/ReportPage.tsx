@@ -11,15 +11,16 @@ import { EditColumnForm } from '@src/components/EditColumnForm.tsx';
 type ReportPageProps = {
   report: Report;
   entities: Entity[];
-  employeeEntity: Entity;
 };
 
-export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employeeEntity }) => {
+export const ReportPage: React.FC<ReportPageProps> = ({ report, entities }) => {
   const [name, setName] = useState(report.name);
   const [isAddingColumn, setIsAddingColumn] = useState(false);
   const [editingColumnIndex, setEditingColumnIndex] = useState<number | null>(null);
   const [columns, setColumns] = useState(report.columns);
   const preview = usePreview(report.name, report.entity_id, columns);
+
+  const entity = entities.find((entity) => entity.id === report.entity_id);
 
   const onAddConfirm = (column: Column): void => {
     setColumns([...columns, column]);
@@ -34,6 +35,10 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employ
     setColumns(columns.slice());
     setEditingColumnIndex(null);
   };
+
+  if (!entity) {
+    return <p>No entity found</p>;
+  }
 
   return (
     <div className="flex flex-col flex-1 p-4 gap-4 overflow-x-auto">
@@ -53,7 +58,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employ
       )}
 
       <Modal isOpen={isAddingColumn} onClose={() => setIsAddingColumn(false)} title="Add Column">
-        <AddColumnForm entity={employeeEntity} entities={entities} onConfirm={onAddConfirm} />
+        <AddColumnForm entity={entity} entities={entities} onConfirm={onAddConfirm} />
       </Modal>
       <Modal
         isOpen={editingColumnIndex != null}
@@ -62,7 +67,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities, employ
       >
         {editingColumnIndex != null && (
           <EditColumnForm
-            entity={employeeEntity}
+            entity={entity}
             entities={entities}
             onConfirm={onEditConfirm}
             column={columns[editingColumnIndex]}

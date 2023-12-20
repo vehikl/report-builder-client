@@ -31,7 +31,7 @@ export const usePreview = (
     };
 
     load();
-  }, [columns, name]);
+  }, [columns, entity_id, name]);
 
   return preview;
 };

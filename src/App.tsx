@@ -8,9 +8,9 @@ import { Report } from '@src/definitions/Report.ts';
 
 export const App: React.FC = () => {
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
-  const { entities, employeeEntity } = useEntities();
+  const entities = useEntities();
 
-  if (!employeeEntity) {
+  if (!entities) {
     return <Spinner />;
   }
 
@@ -20,12 +20,7 @@ export const App: React.FC = () => {
       <div className="flex flex-1 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300">
         <ReportList onReportSelected={setSelectedReport} />
         {selectedReport && (
-          <ReportPage
-            key={selectedReport.id}
-            report={selectedReport}
-            entities={entities}
-            employeeEntity={employeeEntity}
-          />
+          <ReportPage key={selectedReport.id} report={selectedReport} entities={entities} />
         )}
       </div>
     </div>
