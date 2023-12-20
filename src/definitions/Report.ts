@@ -21,6 +21,7 @@ export type Column = {
 
 export type ReportPreview = {
   name: string;
+  entity_id: number;
   columns: Column[];
   records: Record<string, string | number | boolean | null | undefined>[];
 };

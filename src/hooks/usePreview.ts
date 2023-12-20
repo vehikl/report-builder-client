@@ -2,13 +2,18 @@ import { Column, ReportPreview } from '@src/definitions/Report.ts';
 import { useEffect, useState } from 'react';
 import qs from 'qs';
 
-export const usePreview = (reportName: string, columns: Column[]): ReportPreview | null => {
+export const usePreview = (
+  name: string,
+  entity_id: number,
+  columns: Column[],
+): ReportPreview | null => {
   const [preview, setPreview] = useState<ReportPreview | null>(null);
 
   useEffect(() => {
     const load = async (): Promise<void> => {
       const query = qs.stringify({
-        name: reportName,
+        name,
+        entity_id,
         columns,
       });
 
@@ -26,7 +31,7 @@ export const usePreview = (reportName: string, columns: Column[]): ReportPreview
     };
 
     load();
-  }, [columns, reportName]);
+  }, [columns, name]);
 
   return preview;
 };
