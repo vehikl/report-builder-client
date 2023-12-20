@@ -1,9 +1,10 @@
 import React, { FormEventHandler, useState } from 'react';
-import { Entity } from '@src/definitions/Entity.ts';
-import { Column, Field } from '@src/definitions/Report.ts';
+import { Entity, Field } from '@src/definitions/Entity.ts';
+import { Column } from '@src/definitions/Report.ts';
 import { TextField } from '@src/components/TextField.tsx';
 import { Button } from '@src/components/Button.tsx';
 import { ExpressionField } from '@src/components/ExpressionField.tsx';
+import { getFieldPath } from '@src/services/field.ts';
 
 export type AddColumnProps = {
   entity: Entity;
@@ -23,7 +24,7 @@ export const AddColumnForm: React.FC<AddColumnProps> = ({ entity, entities, onCo
   const onConfirmClick = (): void => {
     onConfirm({
       name,
-      expression: fields.map((filed) => filed.key).join(':'),
+      expression: fields.map(getFieldPath).join(':'),
     });
   };
 

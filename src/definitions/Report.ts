@@ -24,8 +24,3 @@ export type ReportPreview = {
   columns: Column[];
   records: Record<string, string | number | boolean | null | undefined>[];
 };
-
-export type Field = {
-  name: string;
-  key: string;
-};

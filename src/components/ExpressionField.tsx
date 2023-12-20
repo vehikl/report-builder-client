@@ -1,8 +1,7 @@
 import React from 'react';
 import { TextField } from '@src/components/TextField.tsx';
 import { EntityFieldsInput } from '@src/components/EntityFieldsInput.tsx';
-import { Field } from '@src/definitions/Report.ts';
-import { Entity } from '@src/definitions/Entity.ts';
+import { Entity, Field } from '@src/definitions/Entity.ts';
 
 type ExpressionFieldProps = {
   value: Field[];

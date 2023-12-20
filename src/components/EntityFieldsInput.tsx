@@ -1,9 +1,8 @@
 import React from 'react';
-import { Entity } from '@src/definitions/Entity.ts';
-import { Field } from '@src/definitions/Report.ts';
+import { Entity, Field } from '@src/definitions/Entity.ts';
 import ChevronUpIcon from '@src/assets/chevron-up.svg?react';
 import cx from 'classnames';
-import { getRelationPath, relationMatchesPath } from '@src/services/relation.ts';
+import { isAttribute, isRelation } from '@src/services/field.ts';
 
 type FieldButtonProps = {
   onClick: () => void;
@@ -67,12 +66,12 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
   isCollection = false,
 }) => {
   const field = fields.at(0);
-  const isLeaf = !field;
-  const selectedAttribute = !field
-    ? null
-    : entity.attributes.find((attribute) => attribute.path === field.key);
 
-  const selectedRelation = !field ? null : entity.relations.find(relationMatchesPath(field.key));
+  const isLeaf = !field;
+
+  const selectedAttribute = isAttribute(field) ? field : null;
+
+  const selectedRelation = isRelation(field) ? field : null;
 
   const selectedEntity = entities.find(
     (entity) => entity.id === selectedRelation?.related_entity_id,
@@ -117,7 +116,7 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
                 <FieldButton
                   label={attribute.name}
                   isSelected={selectedAttribute === attribute}
-                  onClick={() => onChange([{ key: attribute.path, name: attribute.name }])}
+                  onClick={() => onChange([attribute])}
                 />
               </li>
             ))}
@@ -126,9 +125,7 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
                 <FieldButton
                   isExpandable
                   label={relation.name}
-                  onClick={() =>
-                    onChange([{ key: getRelationPath(relation), name: relation.name }])
-                  }
+                  onClick={() => onChange([relation])}
                 />
               </li>
             ))}
