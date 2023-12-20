@@ -31,7 +31,7 @@ export const EditColumnForm: React.FC<EditColumnProps> = ({
   const onConfirmClick = (): void => {
     onConfirm({
       name,
-      expression: fields.map(getFieldPath).join(':'),
+      expression: fields.map(getFieldPath).join(','),
     });
   };
 

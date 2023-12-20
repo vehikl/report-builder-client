@@ -6,7 +6,7 @@ export const getColumnFields = (column: Column, entity: Entity, entities: Entity
   const fields: Field[] = [];
   let currentEntity: Entity | null = entity;
 
-  column.expression.split(':').forEach((path) => {
+  column.expression.split(',').forEach((path) => {
     const attribute = currentEntity?.attributes.find((attribute) => attribute.path === path);
     if (attribute) {
       fields.push(attribute);

@@ -24,7 +24,7 @@ export const AddColumnForm: React.FC<AddColumnProps> = ({ entity, entities, onCo
   const onConfirmClick = (): void => {
     onConfirm({
       name,
-      expression: fields.map(getFieldPath).join(':'),
+      expression: fields.map(getFieldPath).join(','),
     });
   };
 
