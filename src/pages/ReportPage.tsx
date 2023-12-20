@@ -4,9 +4,8 @@ import { Column, Report } from '@src/definitions/Report.ts';
 import { TextField } from '@src/components/TextField.tsx';
 import { ReportPreviewTable } from '@src/components/ReportPreviewTable.tsx';
 import { Modal } from '@src/components/Modal.tsx';
-import { AddColumnForm } from '@src/components/AddColumnForm.tsx';
 import { usePreview } from '@src/hooks/usePreview.ts';
-import { EditColumnForm } from '@src/components/EditColumnForm.tsx';
+import { ColumnForm } from '@src/components/ColumnForm.tsx';
 
 type ReportPageProps = {
   report: Report;
@@ -58,7 +57,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities }) => {
       )}
 
       <Modal isOpen={isAddingColumn} onClose={() => setIsAddingColumn(false)} title="Add Column">
-        <AddColumnForm entity={entity} entities={entities} onConfirm={onAddConfirm} />
+        <ColumnForm entity={entity} entities={entities} onConfirm={onAddConfirm} />
       </Modal>
       <Modal
         isOpen={editingColumnIndex != null}
@@ -66,7 +65,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities }) => {
         title="Edit Column"
       >
         {editingColumnIndex != null && (
-          <EditColumnForm
+          <ColumnForm
             entity={entity}
             entities={entities}
             onConfirm={onEditConfirm}

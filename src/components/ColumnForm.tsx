@@ -4,17 +4,21 @@ import { Column } from '@src/definitions/Report.ts';
 import { TextField } from '@src/components/TextField.tsx';
 import { Button } from '@src/components/Button.tsx';
 import { ExpressionField } from '@src/components/ExpressionField.tsx';
+import { getColumnFields } from '@src/services/column.ts';
 import { getExpressionFromFields } from '@src/services/field.ts';
 
-export type AddColumnProps = {
+export type ColumnFormProps = {
   entity: Entity;
+  column?: Column;
   entities: Entity[];
   onConfirm: (column: Column) => void;
 };
 
-export const AddColumnForm: React.FC<AddColumnProps> = ({ entity, entities, onConfirm }) => {
-  const [fields, setFields] = useState<Field[]>([]);
-  const [name, setName] = useState('');
+export const ColumnForm: React.FC<ColumnFormProps> = ({ entity, entities, onConfirm, column }) => {
+  const [fields, setFields] = useState<Field[]>(
+    column ? getColumnFields(column, entity, entities) : [],
+  );
+  const [name, setName] = useState(column?.name ?? '');
 
   const onSelected = (fields: Field[]): void => {
     setFields(fields);
