@@ -40,7 +40,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities }) => {
   }
 
   return (
-    <div className="flex flex-col flex-1 p-4 gap-4 overflow-x-auto">
+    <div className="flex flex-1 flex-col gap-4 overflow-x-auto p-4">
       <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
         {report.name}
       </h2>
