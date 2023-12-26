@@ -26,23 +26,16 @@ const FieldButton: React.FC<FieldButtonProps> = ({
       onClick={onClick}
       type="button"
       className={cx(
-        'rounded-lg flex items-center justify-between w-full p-2 border-gray-300 dark:border-gray-600 gap-3',
-        {
-          'font-bold': isExpandable || isEntity,
-          'text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800':
-            !isSelected,
-          'text-white dark:text-gray-900 bg-gray-700 dark:bg-gray-50 hover:bg-gray-800 dark:hover:bg-gray-100':
-            isSelected,
-        },
+        'flex w-full items-center justify-between gap-3 rounded-lg border-gray-300 p-2 dark:border-gray-600',
+        (isExpandable || isEntity) && 'font-bold',
+        isSelected
+          ? 'bg-gray-700 text-white hover:bg-gray-800 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-100'
+          : 'bg-gray-50 text-gray-900 hover:bg-gray-100 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-800',
       )}
     >
       <span>{label}</span>
       {isExpandable && (
-        <ChevronUpIcon
-          className={cx('w-3 h-3', {
-            'rotate-180': !isExpanded,
-          })}
-        />
+        <ChevronUpIcon className={cx('h-3 w-3', !isExpanded && 'flex rotate-180')} />
       )}
     </button>
   );
@@ -78,14 +71,7 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
   );
 
   return (
-    <div
-      className={cx(
-        'border-gray-300 text-gray-900 text-sm bg-gray-50 dark:text-white dark:bg-gray-700 dark:border-gray-600',
-        {
-          'rounded-b-lg border-x border-b': true,
-        },
-      )}
-    >
+    <div className="rounded-b-lg border-x border-b border-gray-300 bg-gray-50 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
       <FieldButton
         label={label ?? entity.name}
         onClick={() => (fields.length ? onChange([]) : onChange)}

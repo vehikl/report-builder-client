@@ -15,9 +15,9 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="flex h-screen flex-col">
       <Navbar />
-      <div className="flex flex-1 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300">
+      <div className="flex flex-1 bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-300">
         <ReportList onReportSelected={setSelectedReport} />
         {selectedReport && (
           <ReportPage key={selectedReport.id} report={selectedReport} entities={entities} />

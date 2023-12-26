@@ -6,11 +6,17 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:tailwindcss/recommended',
     'plugin:prettier/recommended'
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
   plugins: ['react', 'react-refresh'],
+  settings: {
+    tailwindcss: {
+      callees: ['cx']
+    }
+  },
   rules: {
     'prettier/prettier': ['warn', {
       'singleQuote': true,
