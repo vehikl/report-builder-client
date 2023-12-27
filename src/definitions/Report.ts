@@ -13,7 +13,7 @@ export type Report = {
 //   updated_at: string;
 // };
 
-// ColumnPreview
+// TODO: ColumnPreview
 export type Column = {
   name: string;
   expression: string;

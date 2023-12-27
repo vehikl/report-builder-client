@@ -1,30 +1,27 @@
 import { Column } from '@src/definitions/Report.ts';
-import { Entity, Field } from '@src/definitions/Entity.ts';
+import { Attribute, Entity } from '@src/definitions/Entity.ts';
+import { getRelatedEntity } from '@src/services/attribute.ts';
 
-export const getColumnFields = (column: Column, entity: Entity, entities: Entity[]): Field[] => {
-  const ids = column.expression.replace(/:\w*/, '').split(',');
+export const getColumnAttributes = (
+  column: Column,
+  entity: Entity,
+  entities: Entity[],
+): Attribute[] => {
+  const ids = column.expression.replace(/:\w*/g, '').split(',');
 
-  const attributeId = ids.pop();
-
-  const fields: Field[] = [];
+  const attributes: Attribute[] = [];
   let currentEntity: Entity | null = entity;
 
   ids.forEach((id) => {
-    const relation = currentEntity?.relations.find((entity) => entity.id.toString() === id);
+    const attribute = currentEntity?.attributes.find((attribute) => attribute.id.toString() === id);
 
-    if (relation) {
-      fields.push(relation);
-      currentEntity = entities.find((entity) => entity.id === relation.related_entity_id) ?? null;
+    if (!attribute) {
+      return;
     }
+
+    attributes.push(attribute);
+    currentEntity = getRelatedEntity(attribute, entities);
   });
 
-  const attribute = currentEntity.attributes.find(
-    (attribute) => attribute.id.toString() === attributeId,
-  );
-
-  if (attribute) {
-    fields.push(attribute);
-  }
-
-  return fields;
+  return attributes;
 };

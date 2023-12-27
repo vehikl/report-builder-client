@@ -1,11 +1,11 @@
 import React, { FormEventHandler, useState } from 'react';
-import { Entity, Field } from '@src/definitions/Entity.ts';
+import { Attribute, Entity } from '@src/definitions/Entity.ts';
 import { Column } from '@src/definitions/Report.ts';
 import { TextField } from '@src/components/TextField.tsx';
 import { Button } from '@src/components/Button.tsx';
 import { ExpressionField } from '@src/components/ExpressionField.tsx';
-import { getColumnFields } from '@src/services/column.ts';
-import { getExpressionFromFields } from '@src/services/field.ts';
+import { getColumnAttributes } from '@src/services/column.ts';
+import { makeExpressionFromAttributes } from '@src/services/attribute.ts';
 
 export type ColumnFormProps = {
   entity: Entity;
@@ -15,20 +15,20 @@ export type ColumnFormProps = {
 };
 
 export const ColumnForm: React.FC<ColumnFormProps> = ({ entity, entities, onConfirm, column }) => {
-  const [fields, setFields] = useState<Field[]>(
-    column ? getColumnFields(column, entity, entities) : [],
+  const [attributes, setAttributes] = useState<Attribute[]>(
+    column ? getColumnAttributes(column, entity, entities) : [],
   );
   const [name, setName] = useState(column?.name ?? '');
 
-  const onSelected = (fields: Field[]): void => {
-    setFields(fields);
-    setName(fields.map((filed) => filed.name).join(' '));
+  const onSelected = (attributes: Attribute[]): void => {
+    setAttributes(attributes);
+    setName(attributes.map((attribute) => attribute.name).join(' '));
   };
 
   const onConfirmClick = (): void => {
     onConfirm({
       name,
-      expression: getExpressionFromFields(fields),
+      expression: makeExpressionFromAttributes(attributes),
     });
   };
 
@@ -40,7 +40,12 @@ export const ColumnForm: React.FC<ColumnFormProps> = ({ entity, entities, onConf
   return (
     <form className="flex flex-col gap-4" onSubmit={onSubmit}>
       <TextField label="Name" value={name} onChange={setName} />
-      <ExpressionField entity={entity} entities={entities} onChange={onSelected} value={fields} />
+      <ExpressionField
+        entity={entity}
+        entities={entities}
+        onChange={onSelected}
+        value={attributes}
+      />
       <Button type="submit">Confirm</Button>
     </form>
   );

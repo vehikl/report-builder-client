@@ -5,7 +5,6 @@ export type Entity = {
   created_at: string;
   updated_at: string;
   attributes: Attribute[];
-  relations: Relation[];
 };
 
 export type Attribute = {
@@ -13,19 +12,7 @@ export type Attribute = {
   entity_id: number;
   path: string;
   name: string;
+  type: string;
   created_at: string;
   updated_at: string;
 };
-
-export type Relation = {
-  id: number;
-  path: string | null;
-  entity_id: number;
-  name: string;
-  related_entity_id: number;
-  is_collection: boolean;
-  created_at: string;
-  updated_at: string;
-};
-
-export type Field = Attribute | Relation;

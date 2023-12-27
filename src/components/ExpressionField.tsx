@@ -1,11 +1,11 @@
 import React from 'react';
 import { TextField } from '@src/components/TextField.tsx';
 import { EntityFieldsInput } from '@src/components/EntityFieldsInput.tsx';
-import { Entity, Field } from '@src/definitions/Entity.ts';
+import { Attribute, Entity } from '@src/definitions/Entity.ts';
 
 type ExpressionFieldProps = {
-  value: Field[];
-  onChange: (value: Field[]) => void;
+  value: Attribute[];
+  onChange: (value: Attribute[]) => void;
   entity: Entity;
   entities: Entity[];
 };
@@ -21,7 +21,7 @@ export const ExpressionField: React.FC<ExpressionFieldProps> = ({
         label="Expression"
         placeholder="Select from the list"
         readOnly
-        value={value.map((field) => field.name).join(' > ')}
+        value={value.map((attribute) => attribute.name).join(' > ')}
         inputClass="rounded-b-none"
       />
       <EntityFieldsInput entity={entity} entities={entities} onChange={onChange} value={value} />
