@@ -9,10 +9,22 @@ export type Entity = {
 
 export type Attribute = {
   id: number;
+  identifier: string;
   entity_id: number;
   path: string;
   name: string;
-  type: string;
+  type: AttributeType;
   created_at: string;
   updated_at: string;
 };
+
+export type BasicAttributeType = {
+  name: 'string' | 'number' | 'boolean';
+};
+
+export type CompositeAttributeType = {
+  name: 'entity' | 'collection';
+  entityId: number;
+};
+
+export type AttributeType = BasicAttributeType | CompositeAttributeType;

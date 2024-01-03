@@ -7,13 +7,15 @@ export const getColumnAttributes = (
   entity: Entity,
   entities: Entity[],
 ): Attribute[] => {
-  const ids = column.expression.replace(/:\w*/g, '').split(',');
+  const identifiers = column.expression.replace(/^:/, '').split('.');
 
   const attributes: Attribute[] = [];
   let currentEntity: Entity | null = entity;
 
-  ids.forEach((id) => {
-    const attribute = currentEntity?.attributes.find((attribute) => attribute.id.toString() === id);
+  identifiers.forEach((identifier) => {
+    const attribute = currentEntity?.attributes.find(
+      (attribute) => attribute.identifier === identifier,
+    );
 
     if (!attribute) {
       return;
@@ -22,6 +24,7 @@ export const getColumnAttributes = (
     attributes.push(attribute);
     currentEntity = getRelatedEntity(attribute, entities);
   });
-
+  console.log(column.expression);
+  console.log(attributes);
   return attributes;
 };

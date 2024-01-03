@@ -1,23 +1,18 @@
 import { Attribute, Entity } from '@src/definitions/Entity.ts';
 
 export const makeExpressionFromAttributes = (attributes: Attribute[]): string =>
-  attributes.map((attribute) => `${attribute.id}:${attribute.path ?? ''}`).join(',');
+  ':' + attributes.map((attribute) => attribute.identifier).join('.');
 
-export const getRelatedEntity = (attribute: Attribute, entities: Entity[]): Entity | null => {
-  const [, , entityId] = attribute.type.match(/^(entity|collection):(\d+)$/) ?? [];
-
-  if (!entityId) {
+export const getRelatedEntity = ({ type }: Attribute, entities: Entity[]): Entity | null => {
+  if (type.name !== 'entity') {
     return null;
   }
-
-  return entities.find((entity) => entity.id.toString() === entityId) ?? null;
+  return entities.find((entity) => entity.id === type.entityId) ?? null;
 };
 
-export const isBasicAttribute = (attribute: Attribute): boolean =>
-  ['string', 'number', 'boolean'].includes(attribute.type);
+export const isBasicAttribute = ({ type }: Attribute): boolean =>
+  ['string', 'number', 'boolean'].includes(type.name);
 
-export const isEntityAttribute = (attribute: Attribute): boolean =>
-  /^entity:\d+$/.test(attribute.type);
+export const isEntityAttribute = ({ type }: Attribute): boolean => type.name === 'entity';
 
-export const isCollectionAttribute = (attribute: Attribute): boolean =>
-  /^collection:\d+$/.test(attribute.type);
+export const isCollectionAttribute = ({ type }: Attribute): boolean => type.name === 'collection';
