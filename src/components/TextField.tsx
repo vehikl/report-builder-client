@@ -16,7 +16,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   onChange,
   disabled = false,
   readOnly = false,
-  inputClass = false,
+  inputClass = '',
   placeholder,
 }) => {
   return (

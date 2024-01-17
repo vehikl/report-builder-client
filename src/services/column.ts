@@ -24,7 +24,9 @@ export const getColumnAttributes = (
     attributes.push(attribute);
     currentEntity = getRelatedEntity(attribute, entities);
   });
-  console.log(column.expression);
-  console.log(attributes);
+
   return attributes;
 };
+
+export const isAttributeColumn = (column: Column): boolean =>
+  /^:[a-zA-Z]+(\.[a-zA-Z]+)*/.test(column.expression);

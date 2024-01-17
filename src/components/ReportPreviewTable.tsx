@@ -39,7 +39,7 @@ export const ReportPreviewTable: React.FC<ReportPreviewProps> = ({
             <tr key={i} className="border-b bg-white dark:border-gray-700 dark:bg-gray-800">
               {preview.columns.map((column) => (
                 <td key={column.name} className="px-6 py-4">
-                  {record[column.name]}
+                  {`${record[column.name] ?? ''}`}
                 </td>
               ))}
               <td className="px-6 py-4" />
