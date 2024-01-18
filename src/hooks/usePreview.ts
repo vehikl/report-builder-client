@@ -1,6 +1,5 @@
 import { Column, ReportPreview } from '@src/definitions/Report.ts';
 import { useEffect, useState } from 'react';
-import qs from 'qs';
 
 export const usePreview = (
   name: string,
@@ -11,14 +10,14 @@ export const usePreview = (
 
   useEffect(() => {
     const load = async (): Promise<void> => {
-      const query = qs.stringify({
-        name,
-        entity_id,
-        columns,
-      });
-
-      const response = await fetch(`http://localhost/api/preview-report?${query}`, {
-        headers: { Accept: 'application/json' },
+      const response = await fetch(`http://localhost/api/preview-report`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          name,
+          entity_id,
+          columns,
+        }),
       });
 
       if (!response.ok) {

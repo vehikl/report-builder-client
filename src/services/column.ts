@@ -7,7 +7,11 @@ export const getColumnAttributes = (
   entity: Entity,
   entities: Entity[],
 ): Attribute[] => {
-  const identifiers = column.expression.replace(/^:/, '').split('.');
+  if (column.expression.type !== 'attribute') {
+    return [];
+  }
+
+  const identifiers = column.expression.value.split('.');
 
   const attributes: Attribute[] = [];
   let currentEntity: Entity | null = entity;
@@ -29,4 +33,4 @@ export const getColumnAttributes = (
 };
 
 export const isAttributeColumn = (column: Column): boolean =>
-  /^:[a-zA-Z]+(\.[a-zA-Z]+)*/.test(column.expression);
+  column.expression.type === 'attribute';

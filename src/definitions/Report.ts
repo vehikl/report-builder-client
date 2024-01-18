@@ -1,3 +1,5 @@
+import { Expression } from '@src/services/expression.ts';
+
 export type Report = {
   id: number;
   name: string;
@@ -16,7 +18,7 @@ export type Report = {
 // TODO: ColumnPreview
 export type Column = {
   name: string;
-  expression: string;
+  expression: Expression;
 };
 
 export type ReportPreview = {

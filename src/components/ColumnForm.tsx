@@ -7,6 +7,8 @@ import { ExpressionField } from '@src/components/ExpressionField.tsx';
 import { getColumnAttributes, isAttributeColumn } from '@src/services/column.ts';
 import { makeExpressionFromAttributes } from '@src/services/attribute.ts';
 import cx from 'classnames';
+import { ExpressionSerializer } from '@src/services/ExpressionSerializer.ts';
+import { ExpressionParser } from '@src/services/ExpressionParser.ts';
 
 export type AttributeTabProps = {
   entity: Entity;
@@ -59,11 +61,11 @@ export type ExpressionTabProps = {
 
 const ExpressionTab: React.FC<ExpressionTabProps> = ({ column, onConfirm }) => {
   const [name, setName] = useState(column?.name ?? '');
-  const [expression, setExpression] = useState(column?.expression ?? '');
+  const [expression, setExpression] = useState(ExpressionSerializer.serialize(column?.expression));
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    onConfirm({ name, expression });
+    onConfirm({ name, expression: new ExpressionParser().read(expression) });
   };
 
   return (
@@ -98,6 +100,7 @@ export const ColumnForm: React.FC<ColumnFormProps> = ({ entity, entities, onConf
       <ul className="mb-4 border-b border-gray-200 text-center text-sm font-medium text-gray-500 dark:border-gray-700 dark:text-gray-400">
         {['Attribute', 'Calculation'].map((label) => (
           <li
+            key={label}
             className={cx(
               'inline-block cursor-pointer rounded-t-lg border-b-2 px-4 py-2',
               mode === label
