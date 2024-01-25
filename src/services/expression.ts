@@ -43,7 +43,7 @@ export type Call = {
 };
 
 export type Basic = {
-  type: 'number' | 'identifier' | 'attribute' | 'string';
+  type: 'number' | 'identifier' | 'field' | 'string';
   value: string;
   position: number;
   length: number;

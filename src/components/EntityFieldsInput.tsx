@@ -1,13 +1,13 @@
 import React from 'react';
-import { Attribute, Entity } from '@src/definitions/Entity.ts';
+import { Field, Entity } from '@src/definitions/Entity.ts';
 import ChevronUpIcon from '@src/assets/chevron-up.svg?react';
 import cx from 'classnames';
 import {
   getRelatedEntity,
-  isBasicAttribute,
-  isCollectionAttribute,
-  isEntityAttribute,
-} from '@src/services/attribute.ts';
+  isBasicField,
+  isCollectionField,
+  isEntityField,
+} from '@src/services/field.ts';
 
 type FieldButtonProps = {
   onClick: () => void;
@@ -50,27 +50,27 @@ type EntityFieldsProps = {
   label?: string;
   entity: Entity;
   entities: Entity[];
-  value: Attribute[];
-  onChange: (attributes: Attribute[]) => void;
+  value: Field[];
+  onChange: (fields: Field[]) => void;
   isCollection?: boolean;
 };
 
 export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
   label,
-  value: attributes,
+  value: fields,
   entity,
   entities,
   onChange,
   isCollection = false,
 }) => {
-  const selectedAttribute = attributes.at(0);
+  const selectedAttribute = fields.at(0);
   const selectedEntity = selectedAttribute ? getRelatedEntity(selectedAttribute, entities) : null;
 
   return (
     <div className="rounded-b-lg border-x border-b border-gray-300 bg-gray-50 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
       <FieldButton
         label={label ?? entity.name}
-        onClick={() => (attributes.length ? onChange([]) : onChange)}
+        onClick={() => (fields.length ? onChange([]) : onChange)}
         isEntity
         isExpandable={!!selectedAttribute}
         isExpanded={!selectedAttribute}
@@ -86,23 +86,23 @@ export const EntityFieldsInput: React.FC<EntityFieldsProps> = ({
               label={selectedAttribute.name}
               entity={selectedEntity}
               entities={entities}
-              value={attributes.slice(1)}
-              onChange={(attributes) => onChange([selectedAttribute, ...attributes])}
-              isCollection={isCollectionAttribute(selectedAttribute)}
+              value={fields.slice(1)}
+              onChange={(fields) => onChange([selectedAttribute, ...fields])}
+              isCollection={isCollectionField(selectedAttribute)}
             />
           </li>
         ) : (
           <>
-            {entity.attributes.filter(isBasicAttribute).map((attribute) => (
-              <li key={attribute.id}>
+            {entity.fields.filter(isBasicField).map((field) => (
+              <li key={field.id}>
                 <FieldButton
-                  label={attribute.name}
-                  isSelected={selectedAttribute === attribute}
-                  onClick={() => onChange([attribute])}
+                  label={field.name}
+                  isSelected={selectedAttribute === field}
+                  onClick={() => onChange([field])}
                 />
               </li>
             ))}
-            {entity.attributes.filter(isEntityAttribute).map((relation) => (
+            {entity.fields.filter(isEntityField).map((relation) => (
               <li key={relation.id}>
                 <FieldButton
                   isExpandable

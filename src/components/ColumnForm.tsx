@@ -1,37 +1,37 @@
 import React, { FormEventHandler, useState } from 'react';
-import { Attribute, Entity } from '@src/definitions/Entity.ts';
+import { Field, Entity } from '@src/definitions/Entity.ts';
 import { Column } from '@src/definitions/Report.ts';
 import { TextField } from '@src/components/TextField.tsx';
 import { Button } from '@src/components/Button.tsx';
 import { ExpressionField } from '@src/components/ExpressionField.tsx';
-import { getColumnAttributes, isAttributeColumn } from '@src/services/column.ts';
-import { makeExpressionFromAttributes } from '@src/services/attribute.ts';
+import { getColumnFields, isFieldColumn } from '@src/services/column.ts';
+import { makeExpressionFromFields } from '@src/services/field.ts';
 import cx from 'classnames';
 import { ExpressionSerializer } from '@src/services/ExpressionSerializer.ts';
 import { ExpressionParser } from '@src/services/ExpressionParser.ts';
 
-export type AttributeTabProps = {
+export type FieldTabProps = {
   entity: Entity;
   column?: Column;
   entities: Entity[];
   onConfirm: (column: Column) => void;
 };
 
-const AttributeTab: React.FC<AttributeTabProps> = ({ column, entity, entities, onConfirm }) => {
-  const [attributes, setAttributes] = useState<Attribute[]>(
-    column ? getColumnAttributes(column, entity, entities) : [],
+const FieldTab: React.FC<FieldTabProps> = ({ column, entity, entities, onConfirm }) => {
+  const [attributes, setAttributes] = useState<Field[]>(
+    column ? getColumnFields(column, entity, entities) : [],
   );
   const [name, setName] = useState(column?.name ?? '');
 
-  const onSelected = (attributes: Attribute[]): void => {
+  const onSelected = (attributes: Field[]): void => {
     setAttributes(attributes);
-    setName(attributes.map((attribute) => attribute.name).join(' '));
+    setName(attributes.map((field) => field.name).join(' '));
   };
 
   const onConfirmClick = (): void => {
     onConfirm({
       name,
-      expression: makeExpressionFromAttributes(attributes),
+      expression: makeExpressionFromFields(attributes),
     });
   };
 
@@ -90,15 +90,13 @@ export type ColumnFormProps = {
 };
 
 export const ColumnForm: React.FC<ColumnFormProps> = ({ entity, entities, onConfirm, column }) => {
-  const isAttribute = !column || isAttributeColumn(column);
-  const [mode, setMode] = useState<'Attribute' | 'Calculation'>(
-    isAttribute ? 'Attribute' : 'Calculation',
-  );
+  const isAttribute = !column || isFieldColumn(column);
+  const [mode, setMode] = useState<'Field' | 'Calculation'>(isAttribute ? 'Field' : 'Calculation');
 
   return (
     <div>
       <ul className="mb-4 border-b border-gray-200 text-center text-sm font-medium text-gray-500 dark:border-gray-700 dark:text-gray-400">
-        {['Attribute', 'Calculation'].map((label) => (
+        {['Field', 'Calculation'].map((label) => (
           <li
             key={label}
             className={cx(
@@ -107,14 +105,14 @@ export const ColumnForm: React.FC<ColumnFormProps> = ({ entity, entities, onConf
                 ? 'border-blue-600 text-blue-600 dark:border-blue-500 dark:text-blue-500'
                 : 'border-transparent hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300',
             )}
-            onClick={() => setMode(mode === 'Attribute' ? 'Calculation' : 'Attribute')}
+            onClick={() => setMode(mode === 'Field' ? 'Calculation' : 'Field')}
           >
             {label}
           </li>
         ))}
       </ul>
-      {mode === 'Attribute' ? (
-        <AttributeTab column={column} entity={entity} entities={entities} onConfirm={onConfirm} />
+      {mode === 'Field' ? (
+        <FieldTab column={column} entity={entity} entities={entities} onConfirm={onConfirm} />
       ) : (
         <ExpressionTab column={column} onConfirm={onConfirm} />
       )}

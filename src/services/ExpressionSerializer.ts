@@ -11,7 +11,7 @@ export class ExpressionSerializer {
         return expression.value;
       case 'number':
         return expression.value.toString();
-      case 'attribute':
+      case 'field':
         return `:${expression.value}`;
       case 'string':
         return `"${expression.value}"`;

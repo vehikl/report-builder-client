@@ -4,27 +4,27 @@ export type Entity = {
   name: string;
   created_at: string;
   updated_at: string;
-  attributes: Attribute[];
+  fields: Field[];
 };
 
-export type Attribute = {
+export type Field = {
   id: number;
   identifier: string;
   entity_id: number;
   path: string;
   name: string;
-  type: AttributeType;
+  type: FieldType;
   created_at: string;
   updated_at: string;
 };
 
-export type BasicAttributeType = {
+export type BasicFieldType = {
   name: 'string' | 'number' | 'boolean';
 };
 
-export type CompositeAttributeType = {
+export type CompositeFieldType = {
   name: 'entity' | 'collection';
   entityId: number;
 };
 
-export type AttributeType = BasicAttributeType | CompositeAttributeType;
+export type FieldType = BasicFieldType | CompositeFieldType;

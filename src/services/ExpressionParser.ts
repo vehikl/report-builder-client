@@ -38,11 +38,11 @@ BASIC
     | string
     | identifier
     | CALL
-    | ATTRIBUTE
+    | FIELD
     | '(' EXPRESSION ')'
     ;
 
-ATTRIBUTE
+FIELD
     : ':'identifier
     ;
 
@@ -55,7 +55,7 @@ const tokens: TokenPattern[] = [
   [/^\s+/, null],
   [/^-?\d+(?:\.\d+)?\b/, 'NUMBER'],
   [/^[a-zA-Z]\w*/, 'IDENT'],
-  [/^:[a-zA-Z]\w*(\.[a-zA-Z]\w*)*/, 'ATTRIBUTE'],
+  [/^:[a-zA-Z]\w*(\.[a-zA-Z]\w*)*/, 'FIELD'],
   [/^"[^"]*"/, 'STRING'],
   [/^\+/, '+'],
   [/^-/, '-'],
@@ -208,10 +208,10 @@ export class ExpressionParser {
       return expr;
     }
 
-    if (this.is('ATTRIBUTE')) {
-      const { token, position, length } = this.eat('ATTRIBUTE');
+    if (this.is('FIELD')) {
+      const { token, position, length } = this.eat('FIELD');
 
-      return { type: 'attribute', value: token.slice(1), position, length };
+      return { type: 'field', value: token.slice(1), position, length };
     }
 
     if (this.is('IDENT')) {

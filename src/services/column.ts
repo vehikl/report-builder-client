@@ -1,36 +1,29 @@
 import { Column } from '@src/definitions/Report.ts';
-import { Attribute, Entity } from '@src/definitions/Entity.ts';
-import { getRelatedEntity } from '@src/services/attribute.ts';
+import { Field, Entity } from '@src/definitions/Entity.ts';
+import { getRelatedEntity } from '@src/services/field.ts';
 
-export const getColumnAttributes = (
-  column: Column,
-  entity: Entity,
-  entities: Entity[],
-): Attribute[] => {
-  if (column.expression.type !== 'attribute') {
+export const getColumnFields = (column: Column, entity: Entity, entities: Entity[]): Field[] => {
+  if (column.expression.type !== 'field') {
     return [];
   }
 
   const identifiers = column.expression.value.split('.');
 
-  const attributes: Attribute[] = [];
+  const attributes: Field[] = [];
   let currentEntity: Entity | null = entity;
 
   identifiers.forEach((identifier) => {
-    const attribute = currentEntity?.attributes.find(
-      (attribute) => attribute.identifier === identifier,
-    );
+    const field = currentEntity?.fields.find((field) => field.identifier === identifier);
 
-    if (!attribute) {
+    if (!field) {
       return;
     }
 
-    attributes.push(attribute);
-    currentEntity = getRelatedEntity(attribute, entities);
+    attributes.push(field);
+    currentEntity = getRelatedEntity(field, entities);
   });
 
   return attributes;
 };
 
-export const isAttributeColumn = (column: Column): boolean =>
-  column.expression.type === 'attribute';
+export const isFieldColumn = (column: Column): boolean => column.expression.type === 'field';
