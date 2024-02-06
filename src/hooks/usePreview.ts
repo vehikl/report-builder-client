@@ -9,10 +9,13 @@ export const usePreview = (
   const [preview, setPreview] = useState<ReportPreview | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     const load = async (): Promise<void> => {
-      const response = await fetch(`http://localhost/api/preview-report`, {
+      const response = await fetch(`/api/preview-report`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        signal: controller.signal,
         body: JSON.stringify({
           name,
           entity_id,
@@ -30,6 +33,8 @@ export const usePreview = (
     };
 
     load();
+
+    return () => controller.abort();
   }, [columns, entity_id, name]);
 
   return preview;

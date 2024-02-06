@@ -11,7 +11,7 @@ export const ReportList: React.FC<ReportListProps> = ({ onReportSelected }) => {
 
   useEffect(() => {
     const load = async (): Promise<void> => {
-      const response = await fetch('http://localhost/api/reports');
+      const response = await fetch('/api/reports');
 
       if (!response.ok) {
         return;

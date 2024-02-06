@@ -6,7 +6,7 @@ export const useEntities = (): Entity[] | null => {
 
   useEffect(() => {
     const load = async (): Promise<void> => {
-      const response = await fetch('http://localhost/api/entities');
+      const response = await fetch('/api/entities');
 
       if (!response.ok) {
         return;

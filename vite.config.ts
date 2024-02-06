@@ -6,4 +6,5 @@ import svgr from 'vite-plugin-svgr';
 export default defineConfig({
   plugins: [react(), svgr()],
   resolve: { alias: { '@src': fileURLToPath(new URL('./src', import.meta.url)) } },
+  server: { proxy: { '/api': 'http://localhost' } },
 });
