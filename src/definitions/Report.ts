@@ -18,6 +18,7 @@ export type Report = {
 // TODO: ColumnPreview
 export type Column = {
   name: string;
+  key: string;
   expression: Expression;
 };
 

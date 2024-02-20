@@ -19,7 +19,7 @@ export const ReportPreviewTable: React.FC<ReportPreviewProps> = ({
           <tr>
             {preview.columns.map((column, i) => (
               <th
-                key={column.name}
+                key={column.key}
                 scope="col"
                 className="cursor-pointer px-6 py-3 hover:underline"
                 onClick={() => onEditClick(i)}
@@ -38,8 +38,8 @@ export const ReportPreviewTable: React.FC<ReportPreviewProps> = ({
           {preview.records.map((record, i) => (
             <tr key={i} className="border-b bg-white dark:border-gray-700 dark:bg-gray-800">
               {preview.columns.map((column) => (
-                <td key={column.name} className="px-6 py-4">
-                  {`${record[column.name] ?? ''}`}
+                <td key={column.key} className="px-6 py-4">
+                  {`${record[column.key] ?? ''}`}
                 </td>
               ))}
               <td className="px-6 py-4" />
