@@ -32,6 +32,7 @@ const FieldTab: React.FC<FieldTabProps> = ({ column, entity, entities, onConfirm
     onConfirm({
       name,
       expression: makeExpressionFromFields(attributes),
+      key: '', // TODO: handle key problem
     });
   };
 
@@ -65,7 +66,7 @@ const ExpressionTab: React.FC<ExpressionTabProps> = ({ column, onConfirm }) => {
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    onConfirm({ name, expression: new ExpressionParser().read(expression) });
+    onConfirm({ name, expression: new ExpressionParser().read(expression), key: '' }); // TODO: handle key problem
   };
 
   return (

@@ -4,8 +4,10 @@ import { Column, Report } from '@src/definitions/Report.ts';
 import { TextField } from '@src/components/TextField.tsx';
 import { ReportPreviewTable } from '@src/components/ReportPreviewTable.tsx';
 import { Modal } from '@src/components/Modal.tsx';
-import { usePreview } from '@src/hooks/usePreview.ts';
 import { ColumnForm } from '@src/components/ColumnForm.tsx';
+import { Button } from '@src/components/Button.tsx';
+import { usePreview } from '@src/hooks/usePreview.ts';
+import { Pagination } from '@src/components/Pagination.tsx';
 
 type ReportPageProps = {
   report: Report;
@@ -17,9 +19,8 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities }) => {
   const [isAddingColumn, setIsAddingColumn] = useState(false);
   const [editingColumnIndex, setEditingColumnIndex] = useState<number | null>(null);
   const [columns, setColumns] = useState(report.columns);
-  const preview = usePreview(report.name, report.entity_id, columns);
-
   const entity = entities.find((entity) => entity.id === report.entity_id);
+  const { preview, setPage, setSort } = usePreview(report.name, report.entity_id, columns);
 
   const onAddConfirm = (column: Column): void => {
     setColumns([...columns, column]);
@@ -34,9 +35,41 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities }) => {
     setColumns(columns.slice());
     setEditingColumnIndex(null);
   };
+  async function downloadReport(): Promise<void> {
+    const response = await fetch('/api/reports/download', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: report.name,
+        entity_id: report.entity_id,
+        columns,
+        sort: preview?.sort,
+      }),
+    });
+
+    if (!response.ok) {
+      return;
+    }
+
+    const blob = await response.blob();
+
+    const href = URL.createObjectURL(blob);
+
+    const aElement = document.createElement('a');
+    aElement.href = href;
+    aElement.setAttribute('download', response.headers.get('X-File-Name') ?? 'file.xlsx');
+    aElement.setAttribute('target', '_blank');
+    aElement.click();
+
+    URL.revokeObjectURL(href);
+  }
 
   if (!entity) {
     return <p>No entity found</p>;
+  }
+
+  if (!preview) {
+    return <p>Loading...</p>;
   }
 
   return (
@@ -48,13 +81,35 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities }) => {
         <TextField label="Report Name" value={name} onChange={setName} />
       </form>
 
-      {preview && (
-        <ReportPreviewTable
-          preview={preview}
-          onAddClick={() => setIsAddingColumn(true)}
-          onEditClick={setEditingColumnIndex}
-        />
-      )}
+      <Button onClick={() => downloadReport()}>Download</Button>
+
+      <Pagination
+        page={preview.records.current_page}
+        lastPage={preview.records.last_page}
+        onPageChange={setPage}
+      />
+
+      <ReportPreviewTable
+        preview={preview}
+        onAddClick={() => setIsAddingColumn(true)}
+        onEditClick={setEditingColumnIndex}
+        onSortClick={(key) => {
+          if (!preview.sort || preview.sort.key !== key) {
+            setSort({ key, direction: 'asc' });
+            setPage(1);
+            return;
+          }
+
+          if (preview.sort.direction === 'asc') {
+            setSort({ key, direction: 'desc' });
+            setPage(1);
+            return;
+          }
+
+          setSort(null);
+          setPage(1);
+        }}
+      />
 
       <Modal isOpen={isAddingColumn} onClose={() => setIsAddingColumn(false)} title="Add Column">
         <ColumnForm entity={entity} entities={entities} onConfirm={onAddConfirm} />

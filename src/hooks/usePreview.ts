@@ -1,18 +1,24 @@
-import { Column, ReportPreview } from '@src/definitions/Report.ts';
+import { Column, ReportPreview, Sort } from '@src/definitions/Report.ts';
 import { useEffect, useState } from 'react';
+import qs from 'qs';
 
-export const usePreview = (
-  name: string,
-  entity_id: number,
-  columns: Column[],
-): ReportPreview | null => {
+export type PreviewService = {
+  preview: ReportPreview | null;
+  setPage: (page: number) => void;
+  setSort: (sort: Sort | null) => void;
+};
+
+export const usePreview = (name: string, entity_id: number, columns: Column[]): PreviewService => {
   const [preview, setPreview] = useState<ReportPreview | null>(null);
+  const [page, setPage] = useState(1);
+  const [sort, setSort] = useState<Sort | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
 
     const load = async (): Promise<void> => {
-      const response = await fetch(`/api/preview-report`, {
+      const query = qs.stringify({ page, sort }, { addQueryPrefix: true });
+      const response = await fetch(`/api/reports/preview${query}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         signal: controller.signal,
@@ -35,7 +41,7 @@ export const usePreview = (
     load();
 
     return () => controller.abort();
-  }, [columns, entity_id, name]);
+  }, [columns, entity_id, name, page, sort]);
 
-  return preview;
+  return { preview, setPage, setSort };
 };
