@@ -19,6 +19,8 @@ export class ExpressionSerializer {
         return `${ExpressionSerializer.serialize(expression.left)} ${
           expression.op
         } ${ExpressionSerializer.serialize(expression.right)}`;
+      case 'group':
+        return `(${ExpressionSerializer.serialize(expression.expression)})`;
       case 'call':
         return `${expression.fn}(${expression.args
           .map((arg) => ExpressionSerializer.serialize(arg))

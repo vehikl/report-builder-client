@@ -39,7 +39,11 @@ BASIC
     | identifier
     | CALL
     | FIELD
-    | '(' EXPRESSION ')'
+    | GROUP
+    ;
+
+GROUP
+    : '(' EXPRESSION ')'
     ;
 
 FIELD
@@ -201,11 +205,7 @@ export class ExpressionParser {
 
   private BASIC(): Expression {
     if (this.is('(')) {
-      this.eat('(');
-      const expr = this.EXPRESSION();
-      this.eat(')');
-
-      return expr;
+      return this.GROUP();
     }
 
     if (this.is('FIELD')) {
@@ -244,6 +244,19 @@ export class ExpressionParser {
       this.lookahead?.position ?? 0,
       this.lookahead?.length ?? this.tokenizer.length,
     );
+  }
+
+  private GROUP(): Expression {
+    const start = this.eat('(');
+    const expression = this.EXPRESSION();
+    const end = this.eat(')');
+
+    return {
+      type: 'group',
+      expression: expression,
+      position: start.position,
+      length: end.position + end.length,
+    };
   }
 
   private CALL(identifier: TokenData): Expression {

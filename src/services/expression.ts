@@ -42,6 +42,13 @@ export type Call = {
   length: number;
 };
 
+export type Group = {
+  type: 'group';
+  expression: Expression;
+  position: number;
+  length: number;
+};
+
 export type Basic = {
   type: 'number' | 'identifier' | 'field' | 'string';
   value: string;
@@ -49,5 +56,11 @@ export type Basic = {
   length: number;
 };
 
-export type Expression = Comparison | Addition | Multiplication | Exponentiation | Call | Basic;
-export type BinaryExpression = Comparison | Addition | Multiplication | Exponentiation;
+export type Expression =
+  | Comparison
+  | Addition
+  | Multiplication
+  | Exponentiation
+  | Call
+  | Group
+  | Basic;
