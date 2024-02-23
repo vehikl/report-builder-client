@@ -77,21 +77,28 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities }) => {
       <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
         {report.name}
       </h2>
-      <form className="max-w-xs">
+      <form className="flex max-w-xs flex-col justify-center gap-4">
         <TextField label="Report Name" value={name} onChange={setName} />
       </form>
 
-      <Button onClick={() => downloadReport()}>Download</Button>
-
-      <Pagination
-        page={preview.records.current_page}
-        lastPage={preview.records.last_page}
-        onPageChange={setPage}
-      />
+      <div className="flex justify-between gap-4">
+        <div className="flex gap-2">
+          <Button onClick={() => setIsAddingColumn(true)} size="sm">
+            Add Column
+          </Button>
+          <Button onClick={() => downloadReport()} size="sm">
+            Download
+          </Button>
+        </div>
+        <Pagination
+          page={preview.records.current_page}
+          lastPage={preview.records.last_page}
+          onPageChange={setPage}
+        />
+      </div>
 
       <ReportPreviewTable
         preview={preview}
-        onAddClick={() => setIsAddingColumn(true)}
         onEditClick={setEditingColumnIndex}
         onSortClick={(key) => {
           if (!preview.sort || preview.sort.key !== key) {

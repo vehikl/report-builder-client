@@ -1,19 +1,16 @@
 import React from 'react';
 import { ReportPreview } from '@src/definitions/Report.ts';
-import { Button } from '@src/components/Button.tsx';
 import CaretUpIcon from '@src/assets/caret-up.svg?react';
 import CaretDownIcon from '@src/assets/caret-down.svg?react';
 import CaretSortIcon from '@src/assets/caret-sort.svg?react';
 
 type ReportPreviewProps = {
   preview: ReportPreview;
-  onAddClick: () => void;
   onEditClick: (columnIndex: number) => void;
   onSortClick: (key: string) => void;
 };
 export const ReportPreviewTable: React.FC<ReportPreviewProps> = ({
   preview,
-  onAddClick,
   onEditClick,
   onSortClick,
 }) => {
@@ -40,11 +37,6 @@ export const ReportPreviewTable: React.FC<ReportPreviewProps> = ({
                 </div>
               </th>
             ))}
-            <th scope="col" className="flex justify-center px-6 py-3">
-              <Button onClick={onAddClick} size="sm">
-                Add
-              </Button>
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -58,7 +50,6 @@ export const ReportPreviewTable: React.FC<ReportPreviewProps> = ({
                   {`${record[column.key] ?? ''}`}
                 </td>
               ))}
-              <td className="px-6 py-4" />
             </tr>
           ))}
         </tbody>
