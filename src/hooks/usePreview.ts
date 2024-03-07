@@ -18,24 +18,30 @@ export const usePreview = (name: string, entity_id: number, columns: Column[]): 
 
     const load = async (): Promise<void> => {
       const query = qs.stringify({ page, sort }, { addQueryPrefix: true });
-      const response = await fetch(`/api/reports/preview${query}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        signal: controller.signal,
-        body: JSON.stringify({
-          name,
-          entity_id,
-          columns,
-        }),
-      });
+      try {
+        const response = await fetch(`/api/reports/preview${query}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          signal: controller.signal,
+          body: JSON.stringify({
+            name,
+            entity_id,
+            columns,
+          }),
+        });
 
-      if (!response.ok) {
-        return;
+        if (!response.ok) {
+          return;
+        }
+
+        const { data } = (await response.json()) as { data: ReportPreview };
+
+        setPreview(data);
+      } catch (e) {
+        if (!(e instanceof DOMException) || e.name !== 'AbortError') {
+          throw e;
+        }
       }
-
-      const { data } = (await response.json()) as { data: ReportPreview };
-
-      setPreview(data);
     };
 
     load();
