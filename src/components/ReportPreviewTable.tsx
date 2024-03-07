@@ -16,7 +16,7 @@ export const ReportPreviewTable: React.FC<ReportPreviewProps> = ({
 }) => {
   return (
     <div className="overflow-auto border dark:border-gray-700 sm:rounded-lg">
-      <table className="text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
+      <table className="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
         <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             {preview.columns.map((column, i) => (

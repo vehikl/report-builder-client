@@ -12,7 +12,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }
     isOpen && (
       <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center">
         <div className="absolute h-full w-full bg-black opacity-30" onClick={onClose} />
-        <div className="relative max-h-screen w-96 rounded-lg bg-white shadow dark:bg-gray-700">
+        <div className="relative flex max-h-screen w-96 flex-col rounded-lg bg-white shadow dark:bg-gray-700">
           <div className="flex items-center justify-between rounded-t border-b px-4 py-2 dark:border-gray-600">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
             <button
@@ -24,7 +24,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }
               <span className="sr-only">Close modal</span>
             </button>
           </div>
-          <div className="p-4">{children}</div>
+          <div className="overflow-y-hidden p-4">{children}</div>
         </div>
       </div>
     )

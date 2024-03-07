@@ -16,7 +16,7 @@ export const ExpressionField: React.FC<ExpressionFieldProps> = ({
   onChange,
 }) => {
   return (
-    <div>
+    <div className="flex flex-col">
       <TextField
         label="Expression"
         placeholder="Select from the list"
@@ -24,7 +24,9 @@ export const ExpressionField: React.FC<ExpressionFieldProps> = ({
         value={value.map((field) => field.name).join(' > ')}
         inputClass="rounded-b-none"
       />
-      <EntityFieldsInput entity={entity} entities={entities} onChange={onChange} value={value} />
+      <div className="max-h-96 overflow-y-auto">
+        <EntityFieldsInput entity={entity} entities={entities} onChange={onChange} value={value} />
+      </div>
     </div>
   );
 };

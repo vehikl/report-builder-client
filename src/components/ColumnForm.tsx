@@ -95,7 +95,7 @@ export const ColumnForm: React.FC<ColumnFormProps> = ({ entity, entities, onConf
   const [mode, setMode] = useState<'Field' | 'Calculation'>(isAttribute ? 'Field' : 'Calculation');
 
   return (
-    <div>
+    <div className="flex flex-col">
       <ul className="mb-4 border-b border-gray-200 text-center text-sm font-medium text-gray-500 dark:border-gray-700 dark:text-gray-400">
         {['Field', 'Calculation'].map((label) => (
           <li
