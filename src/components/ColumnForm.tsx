@@ -1,6 +1,6 @@
 import React, { FormEventHandler, useState } from 'react';
 import { Field, Entity } from '@src/definitions/Entity.ts';
-import { Column } from '@src/definitions/Report.ts';
+import { Column, Format } from '@src/definitions/Report.ts';
 import { TextField } from '@src/components/TextField.tsx';
 import { Button } from '@src/components/Button.tsx';
 import { ExpressionField } from '@src/components/ExpressionField.tsx';
@@ -22,6 +22,7 @@ const FieldTab: React.FC<FieldTabProps> = ({ column, entity, entities, onConfirm
     column ? getColumnFields(column, entity, entities) : [],
   );
   const [name, setName] = useState(column?.name ?? '');
+  const [format, setFormat] = useState<Format>(column?.format ?? 'General');
 
   const onSelected = (attributes: Field[]): void => {
     setAttributes(attributes);
@@ -32,7 +33,8 @@ const FieldTab: React.FC<FieldTabProps> = ({ column, entity, entities, onConfirm
     onConfirm({
       name,
       expression: makeExpressionFromFields(attributes),
-      key: '', // TODO: handle key problem
+      key: '', // TODO: handle key problem,
+      format,
     });
   };
 
@@ -44,6 +46,24 @@ const FieldTab: React.FC<FieldTabProps> = ({ column, entity, entities, onConfirm
   return (
     <form className="flex flex-col gap-4" onSubmit={onSubmit}>
       <TextField label="Name" value={name} onChange={setName} />
+
+      <label
+        htmlFor="countries"
+        className="block text-sm font-medium text-gray-900 dark:text-white"
+      >
+        Format
+        <select
+          value={format}
+          onChange={(e) => setFormat(e.target.value as Format)}
+          id="countries"
+          className="mt-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+        >
+          {['General', 'YesNo', 'NumberZeroDecimal', 'NumberTwoDecimals'].map((option) => (
+            <option value={option}>{option}</option>
+          ))}
+        </select>
+      </label>
+
       <ExpressionField
         entity={entity}
         entities={entities}
@@ -63,15 +83,39 @@ export type ExpressionTabProps = {
 const ExpressionTab: React.FC<ExpressionTabProps> = ({ column, onConfirm }) => {
   const [name, setName] = useState(column?.name ?? '');
   const [expression, setExpression] = useState(ExpressionSerializer.serialize(column?.expression));
+  const [format, setFormat] = useState<Format>(column?.format ?? 'General');
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    onConfirm({ name, expression: new ExpressionParser().read(expression), key: '' }); // TODO: handle key problem
+    onConfirm({
+      name,
+      expression: new ExpressionParser().read(expression),
+      key: '',
+      format,
+    }); // TODO: handle key problem
   };
 
   return (
     <form className="flex flex-col gap-4" onSubmit={onSubmit}>
       <TextField label="Name" value={name} onChange={setName} />
+
+      <label
+        htmlFor="countries"
+        className="block text-sm font-medium text-gray-900 dark:text-white"
+      >
+        Format
+        <select
+          value={format}
+          onChange={(e) => setFormat(e.target.value as Format)}
+          id="countries"
+          className="mt-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+        >
+          {['General', 'YesNo', 'NumberZeroDecimal', 'NumberTwoDecimals'].map((option) => (
+            <option value={option}>{option}</option>
+          ))}
+        </select>
+      </label>
+
       <TextField
         label="Expression"
         value={expression}

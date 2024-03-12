@@ -1,5 +1,9 @@
 import { Expression } from '@src/services/expression.ts';
 
+export type Format = 'General' | 'YesNo' | 'NumberZeroDecimal' | 'NumberTwoDecimals';
+
+export type CellValue = string | number | boolean | null | undefined;
+
 export type Report = {
   id: number;
   name: string;
@@ -20,6 +24,7 @@ export type Column = {
   name: string;
   key: string;
   expression: Expression;
+  format: Format;
 };
 
 export type Paginated<T = unknown> = {
@@ -37,7 +42,7 @@ export type Sort = {
   direction: 'asc' | 'desc';
 };
 
-export type ReportRecord = Record<string, string | number | boolean | null | undefined>;
+export type ReportRecord = Record<string, CellValue>;
 
 export type ReportPreview = {
   name: string;

@@ -3,11 +3,13 @@ import { ReportPreview } from '@src/definitions/Report.ts';
 import CaretUpIcon from '@src/assets/caret-up.svg?react';
 import CaretDownIcon from '@src/assets/caret-down.svg?react';
 import CaretSortIcon from '@src/assets/caret-sort.svg?react';
+import { format } from '@src/services/format.ts';
 
 type ReportPreviewProps = {
   preview: ReportPreview;
   onEditClick: (columnIndex: number) => void;
   onSortClick: (key: string) => void;
+  onDeleteColumn: (key: string) => void;
 };
 export const ReportPreviewTable: React.FC<ReportPreviewProps> = ({
   preview,
@@ -47,7 +49,7 @@ export const ReportPreviewTable: React.FC<ReportPreviewProps> = ({
             >
               {preview.columns.map((column) => (
                 <td key={column.key} className="px-6 py-4">
-                  {`${record[column.key] ?? ''}`}
+                  {`${format(record[column.key], column.format) ?? ''}`}
                 </td>
               ))}
             </tr>

@@ -35,6 +35,11 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities }) => {
     setColumns(columns.slice());
     setEditingColumnIndex(null);
   };
+
+  const onDeleteColumn = (key: string): void => {
+    setColumns(columns.filter((column) => column.key !== key));
+  };
+
   async function downloadReport(): Promise<void> {
     const response = await fetch('/api/reports/download', {
       method: 'POST',
@@ -100,6 +105,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({ report, entities }) => {
       <ReportPreviewTable
         preview={preview}
         onEditClick={setEditingColumnIndex}
+        onDeleteColumn={onDeleteColumn}
         onSortClick={(key) => {
           if (!preview.sort || preview.sort.key !== key) {
             setSort({ key, direction: 'asc' });
