@@ -7,7 +7,7 @@ export type CellValue = string | number | boolean | null | undefined;
 export type Report = {
   id: number;
   name: string;
-  entity_id: number;
+  entity_id: string;
   columns: Column[];
 };
 
@@ -46,7 +46,7 @@ export type ReportRecord = Record<string, CellValue>;
 
 export type ReportPreview = {
   name: string;
-  entity_id: number;
+  entity_id: string;
   columns: Column[];
   records: Paginated<ReportRecord>;
   sort: Sort | null;

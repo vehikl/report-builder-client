@@ -8,7 +8,7 @@ export type PreviewService = {
   setSort: (sort: Sort | null) => void;
 };
 
-export const usePreview = (name: string, entity_id: number, columns: Column[]): PreviewService => {
+export const usePreview = (name: string, entity_id: string, columns: Column[]): PreviewService => {
   const [preview, setPreview] = useState<ReportPreview | null>(null);
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<Sort | null>(null);

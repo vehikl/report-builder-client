@@ -1,5 +1,5 @@
 export type Entity = {
-  id: number;
+  id: string;
   table: string;
   name: string;
   created_at: string;
@@ -10,7 +10,7 @@ export type Entity = {
 export type Field = {
   id: number;
   identifier: string;
-  entity_id: number;
+  entity_id: string;
   path: string;
   name: string;
   type: FieldType;
@@ -24,7 +24,7 @@ export type BasicFieldType = {
 
 export type CompositeFieldType = {
   name: 'entity' | 'collection';
-  entityId: number;
+  entityId: string;
 };
 
 export type FieldType = BasicFieldType | CompositeFieldType;
