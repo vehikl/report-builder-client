@@ -11,7 +11,7 @@ export const RolesDropdown: React.FC<DropdownProps> = () => {
   return (
     <>
       <button
-        className="inline-flex items-center rounded-md bg-blue-700 px-3 py-1.5 text-center text-xs font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        className="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-center text-xs font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
         type="button"
         onClick={() => setOpen(!open)}
       >
