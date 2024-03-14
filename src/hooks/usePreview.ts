@@ -38,9 +38,10 @@ export const usePreview = (name: string, entity_id: string, columns: Column[]): 
 
         setPreview(data);
       } catch (e) {
-        if (!(e instanceof DOMException) || e.name !== 'AbortError') {
-          throw e;
+        if (e instanceof DOMException && e.name === 'AbortError') {
+          return;
         }
+        throw e;
       }
     };
 

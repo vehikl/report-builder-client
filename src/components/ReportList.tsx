@@ -10,19 +10,33 @@ export const ReportList: React.FC<ReportListProps> = ({ onReportSelected }) => {
   const [reports, setReports] = useState<Report[] | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     const load = async (): Promise<void> => {
-      const response = await fetch('/api/reports');
+      try {
+        const response = await fetch('/api/reports', {
+          headers: { Accept: 'application/json' },
+          signal: controller.signal,
+        });
 
-      if (!response.ok) {
-        return;
+        if (!response.ok) {
+          return;
+        }
+
+        const { data } = (await response.json()) as { data: Report[] };
+
+        setReports(data);
+      } catch (e) {
+        if (e instanceof DOMException && e.name === 'AbortError') {
+          return;
+        }
+        throw e;
       }
-
-      const { data } = (await response.json()) as { data: Report[] };
-
-      setReports(data);
     };
 
     load();
+
+    return () => controller.abort();
   }, []);
 
   if (!reports) {
